@@ -11,6 +11,11 @@ type Class = {
   delay: number
 }
 
+type Image = {
+  src: string
+  alt: string
+}
+
 // State
 const progress = ref(0)
 const imageClass = ref('opacity-0')
@@ -27,6 +32,12 @@ const classes: Class[] = [
   { name: imageClass, delay: 100 },
   { name: titleClass, delay: 2000 },
   { name: nextClass, delay: 3000 },
+]
+
+const images: Image[] = [
+  { src: '/src/assets/abc/1.png', alt: '' },
+  { src: '/src/assets/abc/2.png', alt: '' },
+  { src: '/src/assets/abc/3.png', alt: '' },
 ]
 
 // Functions
@@ -90,7 +101,7 @@ highlightWords(words)
         class="flex justify-center transition-opacity duration-500"
         :class="imageClass"
       >
-        <img src="../assets/abc/1.png" alt="Book" class="w-64 h-64" />
+        <img :src="images[0].src" alt="Book" class="w-64 h-64" />
       </div>
 
       <div
