@@ -22,6 +22,11 @@ const router = createRouter({
       name: 'story',
       component: () => import('../views/StoryView.vue'),
     },
+    {
+      path: '/level:levelNumber/task:taskNumber/',
+      name: 'task',
+      component: () => import('../views/TaskView.vue'),
+    },
   ],
 })
 

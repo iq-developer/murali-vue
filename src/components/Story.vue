@@ -1,51 +1,41 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+
+//Props
+const { words, image } = defineProps(['words', 'image'])
 
 // Types
-type Word = {
-  word: string
-  delay: number
-}
+type Word =
+  | {
+      word: string
+      delay: number
+    }
+  | string
 type Class = {
-  name: typeof imageClass | typeof titleClass | typeof nextClass
+  name: typeof imageClass | typeof titleClass
   delay: number
-}
-
-type Image = {
-  src: string
-  alt: string
 }
 
 // State
-const progress = ref(0)
 const imageClass = ref('opacity-0')
 const titleClass = ref('opacity-0')
-const nextClass = ref('opacity-0')
 const highlightIndex = ref(0)
+const titleClassDelay = 1500
 
-// Data
-const words: Word[] = [
-  { word: 'Haribol', delay: 3000 },
-  { word: 'monkeys', delay: 4000 },
-]
+// Constants
 const classes: Class[] = [
-  { name: imageClass, delay: 100 },
-  { name: titleClass, delay: 2000 },
-  { name: nextClass, delay: 3000 },
-]
-
-const images: Image[] = [
-  { src: '/src/assets/abc/1.png', alt: '' },
-  { src: '/src/assets/abc/2.png', alt: '' },
-  { src: '/src/assets/abc/3.png', alt: '' },
+  { name: imageClass, delay: 500 },
+  { name: titleClass, delay: titleClassDelay },
 ]
 
 // Functions
 const highlightWords = (words: Word[]): void => {
-  words.forEach((item) => {
+  words.forEach((word, index) => {
+    const delay = (typeof word === 'string' ? (index + 1) * 1000 : word.delay) + titleClassDelay
+
     setTimeout(() => {
       highlightIndex.value++
-    }, item.delay)
+    }, delay)
   })
 }
 const showClasses = (classes: Class[]): void => {
@@ -55,10 +45,18 @@ const showClasses = (classes: Class[]): void => {
     }, item.delay)
   })
 }
+const getWord = (word: Word): string => {
+  if (typeof word === 'string') return `${word} `
+  return `${word.word} `
+}
+
+// Computed
+const alt = computed(() => words.map(getWord).join(''))
+console.log('alt:', alt.value)
 
 // Handlers
-const handleButtonClick = () => {
-  console.log('Button clicked')
+const handleImageClick = () => {
+  console.log('Image clicked - say hint')
 }
 
 // Lifecycle
@@ -67,67 +65,28 @@ highlightWords(words)
 </script>
 
 <template>
-  <div class="w-full h-screen flex items-center justify-center bg-slate-100">
-    <div class="flex flex-col justify-between gap-5 max-w-4xl w-full h-full bg-white p-6">
-      <div class="flex justify-between items-center">
-        <div id="close">
-          <button
-            @click="handleButtonClick"
-            class="text-2xl p-2 mr-2 text-gray-500 rounded hover:bg-gray-100"
-          >
-            <v-icon name="md-close-round" fill="Gainsboro" scale="2" />
-          </button>
-        </div>
+  <div class="flex flex-col">
+    <div
+      id="image"
+      class="flex justify-center transition-opacity duration-500 pb-20"
+      :class="imageClass"
+    >
+      <img :src="image" :alt="alt" />
+    </div>
 
-        <div class="w-full h-4 bg-gray-200 rounded overflow-hidden">
-          <div
-            class="h-full bg-blue-400 hover:bg-blue-500"
-            :style="{ width: progress + '%' }"
-          ></div>
-        </div>
-
-        <div id="score">
-          <button
-            @click="handleButtonClick"
-            class="text-2xl p-2 ml-3 text-gray-500 rounded hover:bg-gray-100"
-          >
-            <v-icon name="fa-heart" fill="Gainsboro" scale="2" />
-          </button>
-        </div>
-      </div>
-
-      <div
-        id="image"
-        class="flex justify-center transition-opacity duration-500"
-        :class="imageClass"
-      >
-        <img :src="images[0].src" alt="Book" class="w-64 h-64" />
-      </div>
-
-      <div
-        id="title"
-        class="text-4xl font-bold text-center transition-opacity duration-500"
-        :class="titleClass"
-      >
-        <p>
-          <span
-            v-for="(item, index) in words"
-            :key="index"
-            :class="index === highlightIndex && 'bg-green-100'"
-            >{{ item.word + ' ' }}</span
-          >
-        </p>
-      </div>
-
-      <div class="flex justify-center transition-opacity duration-500" :class="nextClass">
-        <button
-          id="next"
-          @click="handleButtonClick"
-          class="bg-blue-400 text-white rounded hover:bg-blue-500 w-full"
-        >
-          <v-icon name="hi-arrow-narrow-right" scale="4" />
-        </button>
-      </div>
+    <div
+      id="title"
+      class="text-4xl font-bold text-center transition-opacity duration-500"
+      :class="titleClass"
+    >
+      <p>
+        <span
+          v-for="(item, index) in words"
+          :key="index"
+          :class="index === highlightIndex && 'bg-rose-100'"
+          >{{ getWord(item) }}
+        </span>
+      </p>
     </div>
   </div>
 </template>

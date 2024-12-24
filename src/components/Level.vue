@@ -20,7 +20,6 @@ const tasks = [
 
 // State
 const activeTask = ref(1)
-// const tasksState = ref([])
 
 const taskClass = (id: number) => {
   if (id === tasks[tasks.length - 1].id) return 'h-1'
