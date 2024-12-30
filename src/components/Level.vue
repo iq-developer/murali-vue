@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import Link from './Link.vue'
 
-defineProps<{
-  msg: string
-}>()
+// Constants // TODO: throw error on each wrong step
+const route = useRoute()
+const levelNumber = +route?.params?.levelNumber
 
 const tasks = [
   { id: 1, name: 'Task 1', description: 'Description for task 1' },
@@ -21,34 +23,28 @@ const tasks = [
 // State
 const activeTask = ref(1)
 
-const taskClass = (id: number) => {
+const taskClass = (id: number): string => {
   if (id === tasks[tasks.length - 1].id) return 'h-1'
   return id % 2 ? 'path' : 'path-right'
 }
 
-const buttonClass = (id: number) => {
+const buttonClass = (id: number): string => {
   const leftRight = id % 2 ? '-left-12' : '-right-12'
   if (activeButton(id)) return `border-green-500 bg-green-200 hover:bg-green-30 ${leftRight}`
   if (disableButton(id)) return `text-gray-400 border-gray-300 bg-gray-200 ${leftRight}`
   return `border-orange-300 bg-orange-100 text-orange-300 hover:bg-orange-200 ${leftRight}`
 }
 
-const disableButton = (id: number) => {
+const disableButton = (id: number): boolean => {
   return id > activeTask.value
 }
 
-const activeButton = (id: number) => {
+const activeButton = (id: number): boolean => {
   return id === activeTask.value
-}
-
-function increment() {
-  activeTask.value++
 }
 </script>
 
 <template>
-  $route.params.id: {{ $route.params.id }}
-
   <div class="h-48 w-full"></div>
   <div class="bg flex justify-center bg-cyan-200">
     <div class="w-full max-w-2xl">
@@ -58,21 +54,24 @@ function increment() {
         class="relative h-48 w-full text-4xl font-bold text-gray-400"
         :class="taskClass(task.id)"
       >
-        <button
-          :disabled="disableButton(task.id)"
-          class="absolute -top-12 h-20 w-32 rounded-full border-8 border-gray-300 bg-gray-200"
-          :class="buttonClass(task.id)"
-          @click="increment"
+        <Link
+          :link="`/level${levelNumber}/task${task.id}/`"
+          :renderChildrenOnly="disableButton(task.id)"
         >
-          <img
-            v-if="task.id === activeTask"
-            src="/src/assets/murali.png"
-            class="absolute -top-24 scale-150"
-            alt="Murali"
-          />
-          <span v-else-if="disableButton(task.id)">{{ task.id }}</span>
-          <span v-else>✓</span>
-        </button>
+          <div
+            class="absolute flex justify-center pt-3 -top-12 h-20 w-32 rounded-full border-8 border-gray-300 bg-gray-200"
+            :class="buttonClass(task.id)"
+          >
+            <img
+              v-if="task.id === activeTask"
+              src="/src/assets/murali.png"
+              class="absolute -top-24 scale-150"
+              alt="Murali"
+            />
+            <span v-else-if="disableButton(task.id)">{{ task.id }}</span>
+            <span v-else>✓</span>
+          </div>
+        </Link>
       </div>
     </div>
   </div>

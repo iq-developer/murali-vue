@@ -1,64 +1,73 @@
 [
   {
-    "id": "level0",
+    "id": "level1",
     "tasks": [
       {
-        "id": "task0",
+        "id": "task1",
         "slides": [
-          {
-            "id": "slide0",
-            "isLesson": true,
-            "slideType": "story",
-            "image": "/src/assets/level0/task0/0.png",
-            "words": ["Мad", "monkeys"]
-          },
           {
             "id": "slide1",
             "isLesson": true,
             "slideType": "story",
-            "image": "/src/assets/level0/task0/1.png",
-            "words": ["One", "monkey"]
+            "words": ["Мad", "monkeys"]
           },
           {
             "id": "slide2",
             "isLesson": true,
             "slideType": "story",
-            "image": "/src/assets/level0/task0/2.png",
-            "words": ["Two", "monkeys"]
+            "words": ["One", "monkey"]
           },
           {
             "id": "slide3",
             "isLesson": true,
             "slideType": "story",
-            "image": "/src/assets/level0/task0/3.png",
-            "words": ["Three", "monkeys"]
+            "words": ["Two", "monkeys"]
           },
           {
             "id": "slide4",
             "isLesson": true,
             "slideType": "story",
-            "image": "/src/assets/level0/task0/4.png",
-            "words": ["Moo!"]
+            "words": ["Three", "monkeys"]
           },
           {
             "id": "slide5",
             "isLesson": true,
             "slideType": "story",
-            "image": "/src/assets/level0/task0/5.png",
-            "words": ["Mad", "monkeys"]
+            "words": ["Moo!"]
           },
           {
             "id": "slide6",
-            "info": "question about story - click on image",
-            "slideType": "storyQuestion",
-            "questions": [
-              "/src/assets/shared/monkey.png",
-              "/src/assets/shared/chicken.png",
-              "/src/assets/shared/cow.png"
-            ]
+            "isLesson": true,
+            "slideType": "story",
+            "words": ["Mad", "monkeys"]
           },
           {
             "id": "slide7",
+            "info": "question about story - click on image",
+            "slideType": "storyQuestion",
+            "questionType": "sound",
+            "answers": [
+              {
+                "image": "/src/assets/shared/monkey-head.png",
+                "alt": "monkey",
+                "answer": true
+              },
+              {
+                "image": "/src/assets/shared/cow.png",
+                "alt": "cow"
+              },
+              {
+                "image": "/src/assets/shared/chicken.png",
+                "alt": "chicken"
+              },
+              {
+                "image": "/src/assets/shared/chicken.png",
+                "alt": "chicken"
+              }
+            ]
+          },
+          {
+            "id": "slide8",
             "slideType": "assembleWord",
             "words": "monkey",
             "image": "/src/assets/shared/monkey-head.png"
@@ -69,28 +78,28 @@
         "id": "task1",
         "slides": [
           {
-            "id": "slide0",
+            "id": "slide1",
             "isLesson": true,
             "slideType": "thisIsLetter",
             "words": "m",
             "image": "/src/assets/shared/monkey-head.png"
           },
           {
-            "id": "slide1",
+            "id": "slide2",
             "noNext": true,
             "slideType": "dragLetter",
             "words": "m",
             "image": "/src/assets/shared/monkey-head.png"
           },
           {
-            "id": "slide2",
+            "id": "slide3",
             "info": "bubbles",
             "slideType": "clickEvery",
             "answer": "m",
             "answerQuantity": 3
           },
           {
-            "id": "slide3",
+            "id": "slide4",
             "isLesson": true,
             "slideType": "selectAll",
             "words": "m",
@@ -102,13 +111,13 @@
             ]
           },
           {
-            "id": "slide4",
+            "id": "slide5",
             "slideType": "selectLetter",
             "image": "/src/assets/shared/monkey-head.png",
             "questions": ["m", "d", "t", "i"]
           },
           {
-            "id": "slide5",
+            "id": "slide6",
             "slideType": "selectImage",
             "words": "m",
             "images": [
@@ -119,7 +128,7 @@
             ]
           },
           {
-            "id": "slide4",
+            "id": "slide7",
             "slideType": "selectLetter",
             "image": "/src/assets/shared/sound.png",
             "questions": ["m", "d", "t", "i"]
