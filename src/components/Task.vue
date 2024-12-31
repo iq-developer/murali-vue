@@ -4,6 +4,7 @@ import data from '../data/levels.json'
 import { RouterLink, useRoute } from 'vue-router'
 import Story from '../components/Story.vue'
 import StoryQuestion from './StoryQuestion.vue'
+import AssembleWord from './AssembleWord.vue'
 
 // Constants // TODO: throw error on each wrong step
 const route = useRoute()
@@ -90,6 +91,7 @@ setTimeout(() => {
             :answers="slide.answers"
             :next="handleNextClick"
           />
+          <AssembleWord v-else-if="slide.slideType === 'assembleWord'" />
         </div>
       </template>
 

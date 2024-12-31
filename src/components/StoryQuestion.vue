@@ -16,7 +16,8 @@ type Answer = {
 }
 
 // Constants
-const NEXT_DELAY = 1000
+const CORRECT_DELAY = 3000
+const WRONG_DELAY = 1000
 
 // State
 const resultClass = ref('')
@@ -35,14 +36,14 @@ const handleAnswerClick = (isCorrect: boolean, index: number) => {
       resultClass.value = ''
       clickedButtonIndex.value = null
       next()
-    }, NEXT_DELAY)
+    }, CORRECT_DELAY)
   } else {
     playAudio('/src/assets/shared/hmm.mp3')
     resultClass.value = 'wrong'
     setTimeout(() => {
       resultClass.value = ''
       clickedButtonIndex.value = null
-    }, NEXT_DELAY)
+    }, WRONG_DELAY)
   }
 }
 
@@ -61,7 +62,7 @@ function randomize<T>(array: T[]): T[] {
 </script>
 
 <template>
-  <div id="content" class="w-full h-full flex flex-col">
+  <div class="w-full h-full flex flex-col">
     <div class="flex-1 flex items-center justify-center">
       <!-- First half content -->
       <button
@@ -107,12 +108,22 @@ function randomize<T>(array: T[]): T[] {
     transform: translateX(10px);
   }
 }
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
 
 .wrong {
   animation: shake 0.5s;
   background-color: tomato;
 }
 .correct {
+  animation: jump 1s;
   background-color: yellowGreen;
 }
 </style>
