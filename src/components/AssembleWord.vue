@@ -111,7 +111,7 @@ function startDrag(event: MouseEvent | TouchEvent, index: number) {
 }
 
 function checkProximity(letter: any) {
-  const greyLetterElements = document.querySelectorAll('.grey-letter')
+  const greyLetterElements = document.querySelectorAll('.querySelector')
   const greyLetterElement = greyLetterElements[letter.index]
   const greyRect = greyLetterElement.getBoundingClientRect()
 
@@ -149,7 +149,11 @@ function checkSuccess() {
     </div>
     <div class="flex-1 flex items-center justify-center">
       <!-- Second half content -->
-      <span v-for="(char, index) in word.split('')" :key="index" class="grey-letter">
+      <span
+        v-for="(char, index) in word.split('')"
+        :key="index"
+        class="querySelector text-8xl font-bold text-gray-300 flex"
+      >
         {{ char }}
       </span>
       <div
@@ -166,12 +170,3 @@ function checkSuccess() {
     </div>
   </div>
 </template>
-
-<style scoped>
-.grey-letter {
-  font-size: 6em;
-  font-weight: bold;
-  color: gainsboro;
-  display: flex;
-}
-</style>
