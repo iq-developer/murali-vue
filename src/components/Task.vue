@@ -18,12 +18,9 @@ const taskNumber = +route?.params?.taskNumber
 const levelData = data[levelNumber - 1]
 const slides = levelData.tasks[taskNumber - 1].slides
 const lastSlideIndex = slides.length - 1
-const NEXT_DELAY = 300 //3000
 
 // State
 const progress = ref(0)
-const nextClass = ref('opacity-0')
-const disableNext = ref(true)
 const slideIndex = ref(0)
 
 // Computed
@@ -33,19 +30,13 @@ const progressUnit = computed(() => 100 / slides.length)
 const handleScoreClick = () => {
   console.log('Score clicked')
 }
-const handleNextClick = () => {
+const next = () => {
   if (slideIndex.value === lastSlideIndex) {
     navigationStore.increaseTaskId()
     router.push(`/level${levelNumber}/`)
   } else {
     slideIndex.value++
     progress.value = (slideIndex.value + 1) * progressUnit.value
-    nextClass.value = 'opacity-0'
-    disableNext.value = true
-    setTimeout(() => {
-      disableNext.value = false
-      nextClass.value = 'opacity-100'
-    }, NEXT_DELAY)
   }
 }
 
@@ -53,10 +44,6 @@ const handleNextClick = () => {
 setTimeout(() => {
   progress.value = (slideIndex.value + 1) * progressUnit.value
 }, 500)
-setTimeout(() => {
-  nextClass.value = 'opacity-100'
-  disableNext.value = false
-}, NEXT_DELAY)
 </script>
 
 <template>
@@ -91,19 +78,19 @@ setTimeout(() => {
             v-if="slide.slideType === 'story'"
             :words="slide.words"
             :image="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}.png`"
-            :next="handleNextClick"
+            :next="next"
           />
           <StoryQuestion
             v-else-if="slide.slideType === 'storyQuestion'"
             :question="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}.mp3`"
             :answers="slide.answers"
-            :next="handleNextClick"
+            :next="next"
           />
           <AssembleWord
             v-else-if="slide.slideType === 'assembleWord'"
             :word="slide.word"
             :image="slide.image"
-            :next="handleNextClick"
+            :next="next"
           />
         </div>
       </template>
