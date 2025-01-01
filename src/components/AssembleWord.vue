@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import { playAudio } from '../utils/helpers.ts'
 
-const greyWord = 'MONKEY'
+// Props
+const { word, image, next } = defineProps<{
+  word: string
+  image: string
+  next: (isLastTask?: boolean) => void
+}>()
 
+// State
 const colorfulLetters = reactive(
-  greyWord.split('').map((char, index) => ({
+  word.split('').map((char, index) => ({
     char,
     color: getRandomColor(),
     angle: getRandomAngle(),
@@ -17,8 +24,28 @@ const colorfulLetters = reactive(
 
 const draggingLetter = ref<{ index: number; startX: number; startY: number } | null>(null)
 
+// Drag-and-drop feature
 function getRandomColor() {
-  const colors = ['red', 'blue', 'green', 'orange', 'purple', 'pink']
+  // Tailwind palette 500 colors
+  const colors = [
+    '#ef4444',
+    '#f97316',
+    '#f59e0b',
+    '#eab308',
+    '#84cc16',
+    '#22c55e',
+    '#10b981',
+    '#14b8a6',
+    '#06b6d4',
+    '#0ea5e9',
+    '#3b82f6',
+    '#6366f1',
+    '#8b5cf6',
+    '#a855f7',
+    '#d946ef',
+    '#ec4899',
+    '#f43f5e',
+  ]
   return colors[Math.floor(Math.random() * colors.length)]
 }
 
@@ -35,7 +62,7 @@ function getLetterStyle(letter: any) {
     position: 'absolute',
     cursor: letter.sticked ? 'default' : 'grab',
     fontWeight: 'bold',
-    fontSize: '5em',
+    fontSize: '6em',
   }
 }
 
@@ -63,11 +90,13 @@ function startDrag(event: MouseEvent | TouchEvent, index: number) {
 
     draggingLetter.value.startX = currentX
     draggingLetter.value.startY = currentY
-
-    checkProximity(letter)
   }
 
   const onMouseUp = () => {
+    if (!draggingLetter.value) return
+    const letter = colorfulLetters[draggingLetter.value.index]
+    checkProximity(letter)
+
     draggingLetter.value = null
     window.removeEventListener('mousemove', onMouseMove)
     window.removeEventListener('mouseup', onMouseUp)
@@ -96,6 +125,18 @@ function checkProximity(letter: any) {
     letter.y = greyRect.top + greyRect.height / 2
     letter.angle = 0
     letter.sticked = true
+    playAudio('/src/assets/shared/ui-click.mp3')
+  }
+
+  checkSuccess()
+}
+
+function checkSuccess() {
+  if (colorfulLetters.every((letter) => letter.sticked)) {
+    playAudio('/src/assets/shared/correct.mp3')
+    setTimeout(() => {
+      next(true)
+    }, 500)
   }
 }
 </script>
@@ -104,16 +145,17 @@ function checkProximity(letter: any) {
   <div class="w-full h-full flex flex-col">
     <div class="flex-1 flex items-center justify-center">
       <!-- First half content -->
-      <span v-for="(char, index) in greyWord.split('')" :key="index" class="grey-letter">
+      <img :src="image" :alt="word" />
+    </div>
+    <div class="flex-1 flex items-center justify-center">
+      <!-- Second half content -->
+      <span v-for="(char, index) in word.split('')" :key="index" class="grey-letter">
         {{ char }}
       </span>
-    </div>
-    <div class="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4">
-      <!-- Second half content -->
       <div
         v-for="(letter, index) in colorfulLetters"
         :key="index"
-        class="colorful-letter"
+        class="absolute text-8xl font-bold select-none"
         :style="getLetterStyle(letter)"
         :data-letter="letter.char"
         @mousedown="startDrag($event, index)"
@@ -127,17 +169,9 @@ function checkProximity(letter: any) {
 
 <style scoped>
 .grey-letter {
-  font-size: 5em;
+  font-size: 6em;
   font-weight: bold;
   color: gainsboro;
   display: flex;
-  gap: 0.1em;
-}
-
-.colorful-letter {
-  position: absolute;
-  font-size: 5em;
-  font-weight: bold;
-  user-select: none;
 }
 </style>

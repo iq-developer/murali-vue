@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { playAudio } from '../utils/helpers.ts'
 
 // Props
 const { question, answers, next } = defineProps<{
@@ -47,12 +48,6 @@ const handleAnswerClick = (isCorrect: boolean, index: number) => {
   }
 }
 
-// Helpers
-const playAudio = (src: string): void => {
-  const audio = new Audio(src)
-  audio.play()
-}
-
 function randomize<T>(array: T[]): T[] {
   return array
     .map((item) => ({ ...item, sortKey: Math.random() }))
@@ -76,7 +71,7 @@ function randomize<T>(array: T[]): T[] {
       <!-- Second half content -->
       <div v-for="(answer, i) in randomAnswers" :key="i" class="flex items-center justify-center">
         <button
-          class="h-50 w-50 bg-white hover:bg-blue-100 rounded-xl border-4 border-gray-200 m-2 p-2"
+          class="h-50 w-50 bg-white hover:bg-blue-400 rounded-xl border-4 border-gray-200 m-2 p-2"
           :class="[clickedButtonIndex === i ? resultClass : '']"
           @click="handleAnswerClick(answer.answer ?? false, i)"
           :disabled="resultClass === 'correct' || resultClass === 'wrong'"

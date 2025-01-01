@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import data from '../data/levels.json'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import Story from '../components/Story.vue'
 import StoryQuestion from './StoryQuestion.vue'
 import AssembleWord from './AssembleWord.vue'
+import { useTaskStore } from '../stores/taskStore'
+
+// Store
+const taskStore = useTaskStore()
 
 // Constants // TODO: throw error on each wrong step
 const route = useRoute()
+const router = useRouter()
 const levelNumber = +route?.params?.levelNumber
 const taskNumber = +route?.params?.taskNumber
 const levelData = data[levelNumber - 1]
@@ -27,15 +32,20 @@ const progressUnit = computed(() => 100 / slides.length)
 const handleScoreClick = () => {
   console.log('Score clicked')
 }
-const handleNextClick = () => {
-  slideIndex.value++
-  progress.value = (slideIndex.value + 1) * progressUnit.value
-  nextClass.value = 'opacity-0'
-  disableNext.value = true
-  setTimeout(() => {
-    disableNext.value = false
-    nextClass.value = 'opacity-100'
-  }, NEXT_DELAY)
+const handleNextClick = (isLastTask?: boolean) => {
+  if (isLastTask) {
+    taskStore.increaseActiveTaskId()
+    router.push(`/level${levelNumber}/`)
+  } else {
+    slideIndex.value++
+    progress.value = (slideIndex.value + 1) * progressUnit.value
+    nextClass.value = 'opacity-0'
+    disableNext.value = true
+    setTimeout(() => {
+      disableNext.value = false
+      nextClass.value = 'opacity-100'
+    }, NEXT_DELAY)
+  }
 }
 
 // Execution
@@ -91,14 +101,19 @@ setTimeout(() => {
             :answers="slide.answers"
             :next="handleNextClick"
           />
-          <AssembleWord v-else-if="slide.slideType === 'assembleWord'" />
+          <AssembleWord
+            v-else-if="slide.slideType === 'assembleWord'"
+            :word="slide.word"
+            :image="slide.image"
+            :next="handleNextClick"
+          />
         </div>
       </template>
 
       <div class="flex justify-center transition-opacity duration-500" :class="nextClass">
         <button
           id="next"
-          @click="handleNextClick"
+          @click="handleNextClick()"
           class="text-white rounded w-full bg-blue-400 hover:bg-blue-500"
           :disabled="disableNext"
         >

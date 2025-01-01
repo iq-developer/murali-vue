@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import Link from './Link.vue'
+import { useTaskStore } from '../stores/taskStore'
+
+// Store
+const taskStore = useTaskStore()
 
 // Constants // TODO: throw error on each wrong step
 const route = useRoute()
@@ -20,9 +23,6 @@ const tasks = [
   { id: 10, name: 'Task 10', description: 'Description for task 10' },
 ]
 
-// State
-const activeTask = ref(1)
-
 const taskClass = (id: number): string => {
   if (id === tasks[tasks.length - 1].id) return 'h-1'
   return id % 2 ? 'path' : 'path-right'
@@ -30,23 +30,23 @@ const taskClass = (id: number): string => {
 
 const buttonClass = (id: number): string => {
   const leftRight = id % 2 ? '-left-12' : '-right-12'
-  if (activeButton(id)) return `border-green-500 bg-green-200 hover:bg-green-30 ${leftRight}`
-  if (disableButton(id)) return `text-gray-400 border-gray-300 bg-gray-200 ${leftRight}`
-  return `border-orange-300 bg-orange-100 text-orange-300 hover:bg-orange-200 ${leftRight}`
+  if (activeButton(id)) return `bg-blue-400 hover:bg-blue-500 ${leftRight}`
+  if (disableButton(id)) return `text-gray-400 bg-white ${leftRight}`
+  return `bg-green-300 text-green-500 hover:bg-green-400 ${leftRight}`
 }
 
 const disableButton = (id: number): boolean => {
-  return id > activeTask.value
+  return id > taskStore.activeTaskId
 }
 
 const activeButton = (id: number): boolean => {
-  return id === activeTask.value
+  return id === taskStore.activeTaskId
 }
 </script>
 
 <template>
   <div class="h-48 w-full"></div>
-  <div class="bg flex justify-center bg-cyan-200">
+  <div class="bg flex justify-center bg-green-200">
     <div class="w-full max-w-2xl">
       <div
         v-for="task in tasks"
@@ -59,17 +59,19 @@ const activeButton = (id: number): boolean => {
           :renderChildrenOnly="disableButton(task.id)"
         >
           <div
-            class="absolute flex justify-center pt-3 -top-12 h-20 w-32 rounded-full border-8 border-gray-300 bg-gray-200"
+            class="absolute flex justify-center pt-5 -top-12 h-20 w-32 rounded-full"
             :class="buttonClass(task.id)"
           >
             <img
-              v-if="task.id === activeTask"
+              v-if="task.id === taskStore.activeTaskId"
               src="/src/assets/murali.png"
               class="absolute -top-24 scale-150"
               alt="Murali"
             />
             <span v-else-if="disableButton(task.id)">{{ task.id }}</span>
-            <span v-else>✓</span>
+            <span v-else>
+              <div class="parent-div">✓</div>
+            </span>
           </div>
         </Link>
       </div>
@@ -83,7 +85,7 @@ const activeButton = (id: number): boolean => {
   background: linear-gradient(
     to top right,
     transparent calc(50% - 5px),
-    #e0f2fe,
+    white,
     transparent calc(50% + 5px)
   );
 }
@@ -91,8 +93,16 @@ const activeButton = (id: number): boolean => {
   background: linear-gradient(
     to bottom right,
     transparent calc(50% - 5px),
-    #e0f2fe,
+    white,
     transparent calc(50% + 5px)
   );
+}
+</style>
+
+<style scoped>
+.parent-div {
+  display: flex;
+  align-items: center;
+  height: 100%; /* Ensure the parent div has a height */
 }
 </style>
