@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import NextButton from './NextButton.vue'
 
-//Props
-const { words, image } = defineProps(['words', 'image'])
+// Props
+const { words, image, next } = defineProps<{
+  words: Word[]
+  image: string
+  next: () => void
+}>()
 
 // Types
 type Word =
@@ -52,7 +57,6 @@ const getWord = (word: Word): string => {
 
 // Computed
 const alt = computed(() => words.map(getWord).join(''))
-console.log('alt:', alt.value)
 
 // Handlers
 const handleImageClick = () => {
@@ -89,6 +93,8 @@ highlightWords(words)
       </p>
     </div>
   </div>
+
+  <NextButton :next="next" />
 </template>
 
 <style scoped>

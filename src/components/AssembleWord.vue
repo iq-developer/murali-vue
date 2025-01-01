@@ -6,7 +6,7 @@ import { playAudio } from '../utils/helpers.ts'
 const { word, image, next } = defineProps<{
   word: string
   image: string
-  next: (isLastTask?: boolean) => void
+  next: () => void
 }>()
 
 // State
@@ -135,7 +135,7 @@ function checkSuccess() {
   if (colorfulLetters.every((letter) => letter.sticked)) {
     playAudio('/src/assets/shared/correct.mp3')
     setTimeout(() => {
-      next(true)
+      next()
     }, 500)
   }
 }

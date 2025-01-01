@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import Link from './Link.vue'
-import { useTaskStore } from '../stores/taskStore'
+import { useNavigationStore } from '../stores/navigationStore'
 
 // Store
-const taskStore = useTaskStore()
+const navigationStore = useNavigationStore()
 
 // Constants // TODO: throw error on each wrong step
 const route = useRoute()
@@ -36,11 +36,11 @@ const buttonClass = (id: number): string => {
 }
 
 const disableButton = (id: number): boolean => {
-  return id > taskStore.activeTaskId
+  return id > navigationStore.taskId
 }
 
 const activeButton = (id: number): boolean => {
-  return id === taskStore.activeTaskId
+  return id === navigationStore.taskId
 }
 </script>
 
@@ -63,14 +63,14 @@ const activeButton = (id: number): boolean => {
             :class="buttonClass(task.id)"
           >
             <img
-              v-if="task.id === taskStore.activeTaskId"
+              v-if="task.id === navigationStore.taskId"
               src="/src/assets/murali.png"
               class="absolute -top-24 scale-150"
               alt="Murali"
             />
             <span v-else-if="disableButton(task.id)">{{ task.id }}</span>
             <span v-else>
-              <div class="parent-div">✓</div>
+              <div>✓</div>
             </span>
           </div>
         </Link>
@@ -96,13 +96,5 @@ const activeButton = (id: number): boolean => {
     white,
     transparent calc(50% + 5px)
   );
-}
-</style>
-
-<style scoped>
-.parent-div {
-  display: flex;
-  align-items: center;
-  height: 100%; /* Ensure the parent div has a height */
 }
 </style>

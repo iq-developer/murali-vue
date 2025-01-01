@@ -5,10 +5,10 @@ import { RouterLink, useRoute, useRouter } from 'vue-router'
 import Story from '../components/Story.vue'
 import StoryQuestion from './StoryQuestion.vue'
 import AssembleWord from './AssembleWord.vue'
-import { useTaskStore } from '../stores/taskStore'
+import { useNavigationStore } from '../stores/navigationStore'
 
 // Store
-const taskStore = useTaskStore()
+const navigationStore = useNavigationStore()
 
 // Constants // TODO: throw error on each wrong step
 const route = useRoute()
@@ -17,6 +17,7 @@ const levelNumber = +route?.params?.levelNumber
 const taskNumber = +route?.params?.taskNumber
 const levelData = data[levelNumber - 1]
 const slides = levelData.tasks[taskNumber - 1].slides
+const lastSlideIndex = slides.length - 1
 const NEXT_DELAY = 300 //3000
 
 // State
@@ -32,9 +33,9 @@ const progressUnit = computed(() => 100 / slides.length)
 const handleScoreClick = () => {
   console.log('Score clicked')
 }
-const handleNextClick = (isLastTask?: boolean) => {
-  if (isLastTask) {
-    taskStore.increaseActiveTaskId()
+const handleNextClick = () => {
+  if (slideIndex.value === lastSlideIndex) {
+    navigationStore.increaseTaskId()
     router.push(`/level${levelNumber}/`)
   } else {
     slideIndex.value++
@@ -69,14 +70,12 @@ setTimeout(() => {
             </div>
           </RouterLink>
         </div>
-
         <div class="w-full h-4 bg-gray-200 rounded overflow-hidden">
           <div
             class="h-full bg-blue-400 hover:bg-blue-500"
             :style="{ width: progress + '%' }"
           ></div>
         </div>
-
         <div id="score" hidden>
           <button
             @click="handleScoreClick"
@@ -86,14 +85,13 @@ setTimeout(() => {
           </button>
         </div>
       </div>
-
-      <!-- Content -->
       <template v-for="(slide, index) in slides">
-        <div v-if="index === slideIndex" class="flex-1">
+        <div v-if="index === slideIndex" class="flex-1 flex flex-col justify-between">
           <Story
             v-if="slide.slideType === 'story'"
             :words="slide.words"
             :image="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}.png`"
+            :next="handleNextClick"
           />
           <StoryQuestion
             v-else-if="slide.slideType === 'storyQuestion'"
@@ -109,18 +107,6 @@ setTimeout(() => {
           />
         </div>
       </template>
-
-      <div class="flex justify-center transition-opacity duration-500" :class="nextClass">
-        <button
-          id="next"
-          @click="handleNextClick()"
-          class="text-white rounded w-full bg-blue-400 hover:bg-blue-500"
-          :disabled="disableNext"
-        >
-          <v-icon name="hi-arrow-narrow-right" scale="4" />
-        </button>
-      </div>
-      <!-- /Content -->
     </div>
   </div>
 </template>
