@@ -1,32 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
 import data from '../data/map.json'
+import Link from './Link.vue'
+import { useNavigationStore } from '../stores/navigationStore'
+import Bubbles from './Bubbles.vue'
 
-const activeLevelIndex = ref(0)
+// Store
+const navigationStore = useNavigationStore()
+
+// Handlers
+const handleLevelClick = (index: number) => {
+  navigationStore.setLevelId(index + 1)
+}
 </script>
 
 <template>
   <div class="scrollable-container flex overflow-x-auto h-[500px]">
     <template v-for="({ id, src, width }, index) in data" :key="id">
-      <RouterLink v-if="index === activeLevelIndex" :to="`/level${id}/`">
+      <Link :to="`/level${id}/`" :renderChildrenOnly="index + 1 !== navigationStore.levelId">
         <img
           :src="src"
           :width="width"
           height="500"
           :alt="'level ' + id"
           class="flex-shrink-0 hover:brightness-110"
+          :class="index + 1 !== navigationStore.levelId ? 'opacity-50' : ''"
+          @click="handleLevelClick(index)"
         />
-      </RouterLink>
-      <div v-else>
-        <img
-          :src="src"
-          :width="width"
-          height="500"
-          :alt="'level ' + id"
-          class="flex-shrink-0 brightness-90"
-        />
-      </div>
+      </Link>
     </template>
   </div>
+
+  <Bubbles />
 </template>

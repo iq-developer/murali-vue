@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-const { link, renderChildrenOnly } = defineProps({
-  link: {
+const { to, renderChildrenOnly } = defineProps({
+  to: {
     type: String,
     required: true,
   },
@@ -17,7 +17,7 @@ const { link, renderChildrenOnly } = defineProps({
   <div v-if="renderChildrenOnly">
     <slot></slot>
   </div>
-  <RouterLink :to="link" v-else>
+  <RouterLink :to="to" v-else>
     <slot></slot>
   </RouterLink>
 </template>

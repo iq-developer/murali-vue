@@ -4,11 +4,10 @@ import { ref } from 'vue'
 // Props
 const { next } = defineProps<{
   next: () => void
-  disabled?: boolean
 }>()
 
 // Constants
-const NEXT_DELAY = 3000
+const NEXT_DELAY = 300
 
 // State
 const nextClass = ref('opacity-0')
@@ -35,7 +34,7 @@ setTimeout(() => {
 <template>
   <button
     id="next"
-    @click="handleNextClick()"
+    @click="handleNextClick"
     class="text-white rounded w-full bg-blue-400 hover:bg-blue-500 transition-opacity duration-500"
     :disabled="nextDisable"
     :class="nextClass"

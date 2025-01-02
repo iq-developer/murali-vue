@@ -6,10 +6,12 @@ import { useNavigationStore } from '../stores/navigationStore'
 // Store
 const navigationStore = useNavigationStore()
 
-// Constants // TODO: throw error on each wrong step
+// Constants
 const route = useRoute()
 const levelNumber = +route?.params?.levelNumber
+if (!levelNumber) throw new Error('Level number is not correct')
 
+// TODO: Replace this with actual tasks
 const tasks = [
   { id: 1, name: 'Task 1', description: 'Description for task 1' },
   { id: 2, name: 'Task 2', description: 'Description for task 2' },
@@ -30,16 +32,16 @@ const taskClass = (id: number): string => {
 
 const buttonClass = (id: number): string => {
   const leftRight = id % 2 ? '-left-12' : '-right-12'
-  if (activeButton(id)) return `bg-blue-400 hover:bg-blue-500 ${leftRight}`
-  if (disableButton(id)) return `text-gray-400 bg-white ${leftRight}`
+  if (checkActiveButton(id)) return `bg-blue-400 hover:bg-blue-500 ${leftRight}`
+  if (checkDisabledButton(id)) return `text-gray-400 bg-white ${leftRight}`
   return `bg-green-300 text-green-500 hover:bg-green-400 ${leftRight}`
 }
 
-const disableButton = (id: number): boolean => {
+const checkDisabledButton = (id: number): boolean => {
   return id > navigationStore.taskId
 }
 
-const activeButton = (id: number): boolean => {
+const checkActiveButton = (id: number): boolean => {
   return id === navigationStore.taskId
 }
 </script>
@@ -55,8 +57,8 @@ const activeButton = (id: number): boolean => {
         :class="taskClass(task.id)"
       >
         <Link
-          :link="`/level${levelNumber}/task${task.id}/`"
-          :renderChildrenOnly="disableButton(task.id)"
+          :to="`/level${levelNumber}/task${task.id}/`"
+          :renderChildrenOnly="checkDisabledButton(task.id)"
         >
           <div
             class="absolute flex justify-center pt-5 -top-12 h-20 w-32 rounded-full"
@@ -68,7 +70,7 @@ const activeButton = (id: number): boolean => {
               class="absolute -top-24 scale-150"
               alt="Murali"
             />
-            <span v-else-if="disableButton(task.id)">{{ task.id }}</span>
+            <span v-else-if="checkDisabledButton(task.id)">{{ task.id }}</span>
             <span v-else>
               <div>✓</div>
             </span>

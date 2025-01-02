@@ -6,6 +6,7 @@ import Story from '../components/Story.vue'
 import StoryQuestion from './StoryQuestion.vue'
 import AssembleWord from './AssembleWord.vue'
 import { useNavigationStore } from '../stores/navigationStore'
+import Bubbles from './Bubbles.vue'
 
 // Store
 const navigationStore = useNavigationStore()
@@ -90,6 +91,11 @@ setTimeout(() => {
             v-else-if="slide.slideType === 'assembleWord'"
             :word="slide.word"
             :image="slide.image"
+            :next="next"
+          />
+          <Bubbles
+            v-else-if="slide.slideType === 'bubbles'"
+            :featuredLetter="slide.answer"
             :next="next"
           />
         </div>

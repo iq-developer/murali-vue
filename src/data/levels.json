@@ -78,6 +78,13 @@
         "id": "task1",
         "slides": [
           {
+            "id": "slide0",
+            "info": "bubbles",
+            "slideType": "clickEvery",
+            "answer": "m",
+            "answerQuantity": 3
+          },
+          {
             "id": "slide1",
             "isLesson": true,
             "slideType": "thisIsLetter",
