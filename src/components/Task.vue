@@ -6,7 +6,7 @@ import Story from '../components/Story.vue'
 import StoryQuestion from './StoryQuestion.vue'
 import AssembleWord from './AssembleWord.vue'
 import { useNavigationStore } from '../stores/navigationStore'
-import Bubbles from './Bubbles.vue'
+import Bubbles from './SoapBubbles.vue'
 
 // Store
 const navigationStore = useNavigationStore()
