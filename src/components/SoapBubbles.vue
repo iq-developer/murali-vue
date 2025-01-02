@@ -10,11 +10,11 @@ const { answer, next } = defineProps<{
 }>()
 
 const featuredLetter = 'm'
-const bubbles = reactive([])
+const bubbles = reactive<{ letter: string; isRed: boolean; style: any }[]>([])
 const featuredClickCount = ref(0)
 const featuredClickedToFinish = 5
 
-const createBubble = () => {
+const createBubble = (): { letter: string; isRed: boolean; style: any } => {
   const letters = abc.split('').filter((l) => l !== featuredLetter)
   const letter =
     Math.random() < 0.5 ? featuredLetter : letters[Math.floor(Math.random() * letters.length)]
@@ -34,7 +34,7 @@ const createBubble = () => {
   }
 }
 
-const handleClick = (bubble) => {
+const handleClick = (bubble: { letter: string; isRed: boolean; style: any }): void => {
   if (bubble.letter === featuredLetter) {
     playAudio('/src/assets/shared/poit.mp3')
     bubble.style.backgroundColor = 'green'
@@ -49,7 +49,7 @@ const handleClick = (bubble) => {
     bubble.isRed = true
     setTimeout(() => {
       bubble.isRed = false
-    }, 3000)
+    }, 2000)
   }
 }
 
@@ -90,7 +90,7 @@ onMounted(() => {
   position: absolute;
   bottom: 0;
   border-radius: 50%;
-  background-color: rgba(173, 216, 230, 0.7);
+  background-color: rgba(96, 165, 250, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,11 +101,18 @@ onMounted(() => {
 }
 
 .bubble.featured {
-  background-color: rgba(173, 216, 230, 0.7);
+  background-color: rgba(96, 165, 250, 0.5);
 }
 
-.bubble.red {
+.bubble.red,
+.bubble.red:hover {
   background-color: tomato;
+  transition: 0.2s;
+}
+
+/* Add a new class for the cyan hover effect */
+.bubble:hover {
+  background-color: rgba(96, 165, 250, 0.8);
 }
 
 @keyframes moveUp {

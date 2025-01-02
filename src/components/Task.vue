@@ -6,7 +6,7 @@ import Story from '../components/Story.vue'
 import StoryQuestion from './StoryQuestion.vue'
 import AssembleWord from './AssembleWord.vue'
 import { useNavigationStore } from '../stores/navigationStore'
-import Bubbles from './SoapBubbles.vue'
+import SoapBubbles from './SoapBubbles.vue'
 
 // Store
 const navigationStore = useNavigationStore()
@@ -93,9 +93,9 @@ setTimeout(() => {
             :image="slide.image"
             :next="next"
           />
-          <Bubbles
+          <SoapBubbles
             v-else-if="slide.slideType === 'bubbles'"
-            :featuredLetter="slide.answer"
+            :answer="slide.answer"
             :next="next"
           />
         </div>
