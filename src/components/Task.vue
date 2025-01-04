@@ -6,6 +6,8 @@ import Story from '../components/Story.vue'
 import StoryQuestion from './StoryQuestion.vue'
 import AssembleWord from './AssembleWord.vue'
 import { useNavigationStore } from '../stores/navigationStore'
+import ThisIs from './ThisIs.vue'
+import DragTo from './DragTo.vue'
 import SoapBubbles from './SoapBubbles.vue'
 
 // Store
@@ -89,6 +91,18 @@ setTimeout(() => {
           />
           <AssembleWord
             v-else-if="slide.slideType === 'assembleWord'"
+            :word="slide.word"
+            :image="slide.image"
+            :next="next"
+          />
+          <ThisIs
+            v-else-if="slide.slideType === 'thisIs'"
+            :word="slide.word"
+            :image="slide.image"
+            :next="next"
+          />
+          <DragTo
+            v-else-if="slide.slideType === 'dragTo'"
             :word="slide.word"
             :image="slide.image"
             :next="next"

@@ -2,7 +2,6 @@
 import data from '../data/map.json'
 import Link from './Link.vue'
 import { useNavigationStore } from '../stores/navigationStore'
-import SoapBubbles from './SoapBubbles.vue'
 
 // Store
 const navigationStore = useNavigationStore()
@@ -29,6 +28,4 @@ const handleLevelClick = (index: number) => {
       </Link>
     </template>
   </div>
-
-  <SoapBubbles />
 </template>

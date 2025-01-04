@@ -75,33 +75,25 @@
         ]
       },
       {
-        "id": "task1",
+        "id": "task2",
         "slides": [
-          {
-            "id": "slide0",
-            "info": "bubbles",
-            "slideType": "clickEvery",
-            "answer": "m",
-            "answerQuantity": 3
-          },
           {
             "id": "slide1",
             "isLesson": true,
-            "slideType": "thisIsLetter",
-            "words": "m",
+            "slideType": "thisIs",
+            "word": "m",
             "image": "/src/assets/shared/monkey-head.png"
           },
           {
             "id": "slide2",
             "noNext": true,
-            "slideType": "dragLetter",
-            "words": "m",
+            "slideType": "dragTo",
+            "word": "m",
             "image": "/src/assets/shared/monkey-head.png"
           },
           {
             "id": "slide3",
-            "info": "bubbles",
-            "slideType": "clickEvery",
+            "slideType": "bubbles",
             "answer": "m",
             "answerQuantity": 3
           },

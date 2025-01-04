@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { playAudio } from '../utils/helpers.ts'
+import { playAudio, getRandomColor } from '../utils/helpers.ts'
+import { colors500RGBA } from '../utils/constants.ts'
 import { abc } from '../utils/constants.ts'
 
 // Props
@@ -9,18 +10,17 @@ const { answer, next } = defineProps<{
   next: () => void
 }>()
 
-const featuredLetter = 'm'
 const bubbles = reactive<{ letter: string; isRed: boolean; style: any }[]>([])
 const featuredClickCount = ref(0)
 const featuredClickedToFinish = 5
 
 const createBubble = (): { letter: string; isRed: boolean; style: any } => {
-  const letters = abc.split('').filter((l) => l !== featuredLetter)
-  const letter =
-    Math.random() < 0.5 ? featuredLetter : letters[Math.floor(Math.random() * letters.length)]
-  const size = Math.random() * 100 + 70
+  const letters = abc.split('').filter((l) => l !== answer)
+  const letter = Math.random() < 0.5 ? answer : letters[Math.floor(Math.random() * letters.length)]
+  const size = Math.random() * 100 + 100
   const duration = Math.random() * 50 + 10
   const left = Math.random() * 50 + 25
+  const color = getRandomColor(colors500RGBA)
 
   return {
     letter,
@@ -30,12 +30,13 @@ const createBubble = (): { letter: string; isRed: boolean; style: any } => {
       height: `${size}px`,
       left: `${left}%`,
       animationDuration: `${duration}s`,
+      backgroundColor: color,
     },
   }
 }
 
 const handleClick = (bubble: { letter: string; isRed: boolean; style: any }): void => {
-  if (bubble.letter === featuredLetter) {
+  if (bubble.letter === answer) {
     playAudio('/src/assets/shared/poit.mp3')
     bubble.style.backgroundColor = 'green'
     bubble.style.opacity = '0'
@@ -43,6 +44,7 @@ const handleClick = (bubble: { letter: string; isRed: boolean; style: any }): vo
     featuredClickCount.value++
     if (featuredClickCount.value === featuredClickedToFinish) {
       playAudio('/src/assets/shared/correct.mp3')
+      next()
     }
   } else {
     playAudio('/src/assets/shared/hmm.mp3')
@@ -64,11 +66,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bubble-container">
+  <div class="bubble-container w-full h-full">
     <div
       v-for="(bubble, index) in bubbles"
       :key="index"
-      :class="['bubble', { featured: bubble.letter === featuredLetter, red: bubble.isRed }]"
+      :class="['bubble', { featured: bubble.letter === answer, red: bubble.isRed }]"
       @click="handleClick(bubble)"
       :style="bubble.style"
     >
@@ -81,7 +83,6 @@ onMounted(() => {
 .bubble-container {
   position: relative;
   width: 100%;
-  height: 100vh;
   overflow: hidden;
   user-select: none;
 }
@@ -90,29 +91,30 @@ onMounted(() => {
   position: absolute;
   bottom: 0;
   border-radius: 50%;
-  background-color: rgba(96, 165, 250, 0.5);
+  background-color: rgba(96, 165, 250, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: 4rem;
+  font-weight: bold;
   cursor: pointer;
   animation: moveUp linear infinite;
   user-select: none;
 }
 
 .bubble.featured {
-  background-color: rgba(96, 165, 250, 0.5);
+  background-color: rgba(96, 165, 250, 0.2);
 }
 
 .bubble.red,
 .bubble.red:hover {
-  background-color: tomato;
+  background-color: tomato !important;
   transition: 0.2s;
 }
 
 /* Add a new class for the cyan hover effect */
 .bubble:hover {
-  background-color: rgba(96, 165, 250, 0.8);
+  background-color: rgba(96, 165, 250, 0.5) !important;
 }
 
 @keyframes moveUp {

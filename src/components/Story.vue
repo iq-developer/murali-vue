@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import NextButton from './NextButton.vue'
+import { activateClasses } from '../utils/helpers'
+import type { Class } from '../utils/types'
 
 // Props
 const { words, image, next } = defineProps<{
@@ -16,10 +18,6 @@ type Word =
       delay: number
     }
   | string
-type Class = {
-  name: typeof imageClass | typeof titleClass
-  delay: number
-}
 
 // State
 const imageClass = ref('opacity-0')
@@ -29,8 +27,8 @@ const titleClassDelay = 1500
 
 // Constants
 const classes: Class[] = [
-  { name: imageClass, delay: 500 },
-  { name: titleClass, delay: titleClassDelay },
+  { name: imageClass, delay: 500, class: 'opacity-100' },
+  { name: titleClass, delay: titleClassDelay, class: 'opacity-100' },
 ]
 
 // Functions
@@ -43,13 +41,7 @@ const highlightWords = (words: Word[]): void => {
     }, delay)
   })
 }
-const showClasses = (classes: Class[]): void => {
-  classes.forEach((item) => {
-    setTimeout(() => {
-      item.name.value = 'opacity-100'
-    }, item.delay)
-  })
-}
+
 const getWord = (word: Word): string => {
   if (typeof word === 'string') return `${word} `
   return `${word.word} `
@@ -64,7 +56,7 @@ const handleImageClick = () => {
 }
 
 // Lifecycle
-showClasses(classes)
+activateClasses(classes)
 highlightWords(words)
 </script>
 
@@ -96,16 +88,3 @@ highlightWords(words)
 
   <NextButton :next="next" />
 </template>
-
-<style scoped>
-.highlight {
-  background: yellow; /* Old browsers */
-  background: linear-gradient(to right, yellow 50%, white 50%);
-  background-size: 200% 100%;
-  background-position: right bottom;
-  transition: 0.5s;
-}
-.highlight:hover {
-  background-position: left bottom;
-}
-</style>

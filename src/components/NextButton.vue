@@ -2,12 +2,12 @@
 import { ref } from 'vue'
 
 // Props
-const { next } = defineProps<{
+const { next, delay = 300 } = defineProps<{
   next: () => void
+  delay?: number
 }>()
 
 // Constants
-const NEXT_DELAY = 300
 
 // State
 const nextClass = ref('opacity-0')
@@ -21,14 +21,14 @@ const handleNextClick = () => {
   setTimeout(() => {
     nextDisable.value = false
     nextClass.value = 'opacity-100'
-  }, NEXT_DELAY)
+  }, delay)
 }
 
 // Execution
 setTimeout(() => {
   nextClass.value = 'opacity-100'
   nextDisable.value = false
-}, NEXT_DELAY)
+}, delay)
 </script>
 
 <template>
