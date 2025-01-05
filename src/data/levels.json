@@ -100,13 +100,28 @@
           {
             "id": "slide4",
             "isLesson": true,
-            "slideType": "selectAll",
-            "words": "m",
-            "images": [
-              "/src/assets/shared/monkey-head.png",
-              "/src/assets/shared/milk.png",
-              "/src/assets/shared/moon.png",
-              "/src/assets/shared/mouse.png"
+            "info": "selectAll",
+            "slideType": "storyQuestion",
+            "questionType": "letter",
+            
+            "answers": [
+              {
+                "image": "/src/assets/shared/monkey-head.png",
+                "alt": "monkey",
+                "answer": true
+              },
+              {
+                "image": "/src/assets/shared/milk.png",
+                "alt": "cow"
+              },
+              {
+                "image": "/src/assets/shared/moon.png",
+                "alt": "chicken"
+              },
+              {
+                "image": "/src/assets/shared/mouse.png",
+                "alt": "chicken"
+              }
             ]
           },
           {

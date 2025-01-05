@@ -47,39 +47,48 @@ const checkActiveButton = (id: number): boolean => {
 </script>
 
 <template>
-  <div class="h-48 w-full"></div>
-  <div class="bg flex justify-center bg-green-200">
-    <div class="w-full max-w-2xl">
+  <div class="relative">
+    <Link :to="`/`">
       <div
-        v-for="task in tasks"
-        :key="task.id"
-        class="relative h-48 w-full text-4xl font-bold text-gray-400"
-        :class="taskClass(task.id)"
+        class="absolute top-0 left-0 m-4 p-2 bg-blue-400 text-white rounded-full hover:bg-blue-500"
       >
-        <Link
-          :to="`/level${levelNumber}/task${task.id}/`"
-          :renderChildrenOnly="checkDisabledButton(task.id)"
+        <v-icon name="bi-arrow-left-short" scale="2" />
+      </div>
+    </Link>
+    <div class="h-48 w-full"></div>
+    <div class="bg flex justify-center bg-green-200">
+      <div class="w-full max-w-2xl">
+        <div
+          v-for="task in tasks"
+          :key="task.id"
+          class="relative h-48 w-full text-4xl font-bold text-gray-400"
+          :class="taskClass(task.id)"
         >
-          <div
-            class="absolute flex justify-center pt-5 -top-12 h-20 w-32 rounded-full"
-            :class="buttonClass(task.id)"
+          <Link
+            :to="`/level${levelNumber}/task${task.id}/`"
+            :renderChildrenOnly="checkDisabledButton(task.id)"
           >
-            <img
-              v-if="task.id === navigationStore.taskId"
-              src="/src/assets/murali.png"
-              class="absolute -top-24 scale-150"
-              alt="Murali"
-            />
-            <span v-else-if="checkDisabledButton(task.id)">{{ task.id }}</span>
-            <span v-else>
-              <div>✓</div>
-            </span>
-          </div>
-        </Link>
+            <div
+              class="absolute flex justify-center pt-5 -top-12 h-20 w-32 rounded-full"
+              :class="buttonClass(task.id)"
+            >
+              <img
+                v-if="task.id === navigationStore.taskId"
+                src="/src/assets/murali.png"
+                class="absolute -top-24 scale-150"
+                alt="Murali"
+              />
+              <span v-else-if="checkDisabledButton(task.id)">{{ task.id }}</span>
+              <span v-else>
+                <div>✓</div>
+              </span>
+            </div>
+          </Link>
+        </div>
       </div>
     </div>
+    <div class="h-24 w-full"></div>
   </div>
-  <div class="h-24 w-full"></div>
 </template>
 
 <style>

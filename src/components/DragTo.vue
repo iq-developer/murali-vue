@@ -24,7 +24,7 @@ const colorfulLetters = reactive([
 
 // Constants
 const draggingLetter = ref<{ index: number; startX: number; startY: number } | null>(null)
-const targetCorrection = 95
+const targetCorrection = 96
 
 // Drag-and-drop features
 function getLetterStyle(letter: any) {
@@ -110,7 +110,7 @@ function checkSuccess() {
     playAudio('/src/assets/shared/correct.mp3')
     setTimeout(() => {
       next()
-    }, 500)
+    }, 1000)
   }
 }
 </script>
@@ -122,7 +122,12 @@ function checkSuccess() {
       <span
         class="grey-letter text-8xl font-bold text-gray-300 rounded-3xl flex border-8 border-dashed border-gray-300"
       >
-        <img :src="image" alt="" width="200" />
+        <img
+          :src="image"
+          alt=""
+          width="176
+        "
+        />
       </span>
       <div
         v-for="(letter, index) in colorfulLetters"
