@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { playAudio, getRandomColor } from '../utils/helpers.ts'
-import { colors500RGBA } from '../utils/constants.ts'
-import { abc } from '../utils/constants.ts'
+import { abc, colors500RGBA } from '../utils/constants.ts'
 
 // Props
 const { answer, next } = defineProps<{

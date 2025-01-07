@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import NextButton from './NextButton.vue'
 import { activateClasses } from '../utils/helpers'
-import type { Class } from '../utils/types'
+import type { Class, Word } from '../utils/types'
 
 // Props
 const { words, image, next } = defineProps<{
@@ -10,14 +10,6 @@ const { words, image, next } = defineProps<{
   image: string
   next: () => void
 }>()
-
-// Types
-type Word =
-  | {
-      word: string
-      delay: number
-    }
-  | string
 
 // State
 const imageClass = ref('opacity-0')

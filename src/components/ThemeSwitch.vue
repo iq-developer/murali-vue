@@ -55,19 +55,19 @@ onMounted(() => {
   bottom: 0;
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
-  transition: .4s;
+  transition: 0.4s;
   border-radius: 34px;
 }
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 26px;
   width: 26px;
   left: 4px;
   bottom: 4px;
   background-color: var(--color-text);
-  transition: .4s;
+  transition: 0.4s;
   border-radius: 50%;
 }
 
@@ -81,7 +81,6 @@ input:checked + .slider:before {
 
 button {
   padding: 0.5rem 1rem;
-  border: none;
   cursor: pointer;
   background-color: var(--color-background);
   color: var(--color-text);

@@ -49,12 +49,12 @@
             "answers": [
               {
                 "image": "/src/assets/shared/monkey-head.png",
-                "alt": "monkey",
-                "answer": true
+                "alt": "monkey"
               },
               {
                 "image": "/src/assets/shared/cow.png",
-                "alt": "cow"
+                "alt": "cow",
+                "answer": true
               },
               {
                 "image": "/src/assets/shared/chicken.png",
@@ -86,7 +86,6 @@
           },
           {
             "id": "slide2",
-            "noNext": true,
             "slideType": "dragTo",
             "word": "m",
             "image": "/src/assets/shared/monkey-head.png"
@@ -100,10 +99,8 @@
           {
             "id": "slide4",
             "isLesson": true,
-            "info": "selectAll",
             "slideType": "storyQuestion",
             "questionType": "letter",
-            
             "answers": [
               {
                 "image": "/src/assets/shared/monkey-head.png",
@@ -112,23 +109,41 @@
               },
               {
                 "image": "/src/assets/shared/milk.png",
-                "alt": "cow"
+                "alt": "cow",
+                "answer": true
               },
               {
                 "image": "/src/assets/shared/moon.png",
-                "alt": "chicken"
+                "alt": "chicken",
+                "answer": true
               },
               {
                 "image": "/src/assets/shared/mouse.png",
-                "alt": "chicken"
+                "alt": "chicken",
+                "answer": true
               }
             ]
           },
           {
             "id": "slide5",
-            "slideType": "selectLetter",
+            "slideType": "storyQuestion",
+            "questionType": "image",
             "image": "/src/assets/shared/monkey-head.png",
-            "questions": ["m", "d", "t", "i"]
+            "answers": [
+              {
+                "word": "m",
+                "answer": true
+              },
+              {
+                "word": "i"
+              },
+              {
+                "word": "d"
+              },
+              {
+                "word": "t"
+              }
+            ]
           },
           {
             "id": "slide6",

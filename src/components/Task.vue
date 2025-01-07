@@ -9,6 +9,7 @@ import { useNavigationStore } from '../stores/navigationStore'
 import ThisIs from './ThisIs.vue'
 import DragTo from './DragTo.vue'
 import SoapBubbles from './SoapBubbles.vue'
+import type { Word } from '../utils/types'
 
 // Store
 const navigationStore = useNavigationStore()
@@ -21,6 +22,7 @@ const taskNumber = +route?.params?.taskNumber
 const levelData = data[levelNumber - 1]
 const slides = levelData.tasks[taskNumber - 1].slides
 const lastSlideIndex = slides.length - 1
+const isDevMode = true
 
 // State
 const progress = ref(0)
@@ -41,6 +43,15 @@ const next = () => {
     slideIndex.value++
     progress.value = (slideIndex.value + 1) * progressUnit.value
   }
+}
+
+// Helpers
+const getQuestionByType = (question: string, questionType: 'sound' | 'image' | 'word'): string => {
+  if (questionType === 'sound')
+    return `/src/assets/level${levelNumber}/task${taskNumber}/${question}.mp3`
+  if (questionType === 'image')
+    return `/src/assets/level${levelNumber}/task${taskNumber}/${question}.png`
+  return question
 }
 
 // Execution
@@ -77,6 +88,13 @@ setTimeout(() => {
       </div>
       <template v-for="(slide, index) in slides">
         <div v-if="index === slideIndex" class="flex-1 flex flex-col justify-between">
+          <button
+            v-if="isDevMode"
+            @click="next"
+            class="absolute bottom-0 right-0 m-4 p-2 rounded-full"
+          >
+            {{ slide.id }}
+          </button>
           <Story
             v-if="slide.slideType === 'story'"
             :words="slide.words"
@@ -85,7 +103,8 @@ setTimeout(() => {
           />
           <StoryQuestion
             v-else-if="slide.slideType === 'storyQuestion'"
-            :question="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}.mp3`"
+            :question="getQuestionByType(slide.question, slide.questionType)"
+            :questionType="slide.questionType"
             :answers="slide.answers"
             :next="next"
           />
