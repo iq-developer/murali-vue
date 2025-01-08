@@ -9,43 +9,49 @@
             "id": "slide1",
             "isLesson": true,
             "slideType": "story",
+            "image": true,
             "words": ["Мad", "monkeys"]
           },
           {
             "id": "slide2",
             "isLesson": true,
             "slideType": "story",
+            "image": true,
             "words": ["One", "monkey"]
           },
           {
             "id": "slide3",
             "isLesson": true,
             "slideType": "story",
+            "image": true,
             "words": ["Two", "monkeys"]
           },
           {
             "id": "slide4",
             "isLesson": true,
             "slideType": "story",
+            "image": true,
             "words": ["Three", "monkeys"]
           },
           {
             "id": "slide5",
             "isLesson": true,
             "slideType": "story",
+            "image": true,
             "words": ["Moo!"]
           },
           {
             "id": "slide6",
             "isLesson": true,
             "slideType": "story",
+            "image": true,
             "words": ["Mad", "monkeys"]
           },
           {
             "id": "slide7",
             "info": "question about story - click on image",
             "slideType": "storyQuestion",
-            "questionType": "sound",
+            "sound": true,
             "answers": [
               {
                 "image": "/src/assets/shared/monkey-head.png",
@@ -69,8 +75,8 @@
           {
             "id": "slide8",
             "slideType": "assembleWord",
-            "word": "monkey",
-            "image": "/src/assets/shared/monkey-head.png"
+            "image": "/src/assets/shared/monkey-head.png",
+            "answer": "monkey"
           }
         ]
       },
@@ -81,26 +87,25 @@
             "id": "slide1",
             "isLesson": true,
             "slideType": "thisIs",
-            "word": "m",
-            "image": "/src/assets/shared/monkey-head.png"
+            "image": "/src/assets/shared/monkey-head.png",
+            "answer": "m"
           },
           {
             "id": "slide2",
             "slideType": "dragTo",
-            "word": "m",
-            "image": "/src/assets/shared/monkey-head.png"
+            "image": "/src/assets/shared/monkey-head.png",
+            "answer": "m"
           },
           {
             "id": "slide3",
-            "slideType": "bubbles",
-            "answer": "m",
-            "answerQuantity": 3
+            "slideType": "soapBubbles",
+            "answer": "m"
           },
           {
             "id": "slide4",
             "isLesson": true,
             "slideType": "storyQuestion",
-            "questionType": "letter",
+            "word": "m",
             "answers": [
               {
                 "image": "/src/assets/shared/monkey-head.png",
@@ -127,7 +132,6 @@
           {
             "id": "slide5",
             "slideType": "storyQuestion",
-            "questionType": "image",
             "image": "/src/assets/shared/monkey-head.png",
             "answers": [
               {

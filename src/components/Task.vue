@@ -45,19 +45,29 @@ const next = () => {
   }
 }
 
-// Helpers
-const getQuestionByType = (question: string, questionType: 'sound' | 'image' | 'word'): string => {
-  if (questionType === 'sound')
-    return `/src/assets/level${levelNumber}/task${taskNumber}/${question}.mp3`
-  if (questionType === 'image')
-    return `/src/assets/level${levelNumber}/task${taskNumber}/${question}.png`
-  return question
-}
-
 // Execution
 setTimeout(() => {
   progress.value = (slideIndex.value + 1) * progressUnit.value
 }, 500)
+
+// Error handling
+if (!levelData) {
+  throw new Error(`Level ${levelNumber} not found`)
+}
+if (!levelData.tasks[taskNumber - 1]) {
+  throw new Error(`Task ${taskNumber} not found`)
+}
+if (!slides) {
+  throw new Error(`Slides not found`)
+}
+if (slides.length === 0) {
+  throw new Error(`Slides are empty`)
+}
+// if (!slides[slideIndex.value]) {
+//   throw new Error(`Slide ${slideIndex.value} not found`)
+// }
+
+// throw new Error(`test Error`)
 </script>
 
 <template>
@@ -103,31 +113,30 @@ setTimeout(() => {
           />
           <StoryQuestion
             v-else-if="slide.slideType === 'storyQuestion'"
-            :question="getQuestionByType(slide.question, slide.questionType)"
-            :questionType="slide.questionType"
-            :answers="slide.answers"
+            :slide="slide"
+            :path="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}`"
             :next="next"
           />
           <AssembleWord
             v-else-if="slide.slideType === 'assembleWord'"
-            :word="slide.word"
+            :answer="slide.answer"
             :image="slide.image"
             :next="next"
           />
           <ThisIs
             v-else-if="slide.slideType === 'thisIs'"
-            :word="slide.word"
+            :answer="slide.answer"
             :image="slide.image"
             :next="next"
           />
           <DragTo
             v-else-if="slide.slideType === 'dragTo'"
-            :word="slide.word"
+            :answer="slide.answer"
             :image="slide.image"
             :next="next"
           />
           <SoapBubbles
-            v-else-if="slide.slideType === 'bubbles'"
+            v-else-if="slide.slideType === 'soapBubbles'"
             :answer="slide.answer"
             :next="next"
           />

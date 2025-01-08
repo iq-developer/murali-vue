@@ -5,8 +5,8 @@ import { activateClasses } from '../utils/helpers'
 import type { Class } from '../utils/types'
 
 // Props
-const { word, image, next } = defineProps<{
-  word: string
+const { answer, image, next } = defineProps<{
+  answer: string
   image: string
   next: () => void
 }>()
@@ -47,7 +47,7 @@ activateClasses(classes)
       class="flex justify-center transition-opacity duration-500 pb-20"
       :class="imageClass"
     >
-      <img :src="image" :alt="word" :class="imageInnerClass" />
+      <img :src="image" :alt="answer" :class="imageInnerClass" />
     </div>
 
     <div
@@ -56,7 +56,7 @@ activateClasses(classes)
       :class="titleClass"
     >
       <p :class="wordInnerClass">
-        {{ word }}
+        {{ answer }}
       </p>
     </div>
   </div>

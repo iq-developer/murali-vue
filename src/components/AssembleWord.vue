@@ -3,15 +3,15 @@ import { ref, reactive } from 'vue'
 import { playAudio, getRandomColor, getRandomAngle } from '../utils/helpers.ts'
 
 // Props
-const { word, image, next } = defineProps<{
-  word: string
+const { answer, image, next } = defineProps<{
+  answer: string
   image: string
   next: () => void
 }>()
 
 // State
 const colorfulLetters = reactive(
-  word.split('').map((char, index) => ({
+  answer.split('').map((char, index) => ({
     char,
     color: getRandomColor(),
     angle: getRandomAngle(),
@@ -117,12 +117,12 @@ function checkSuccess() {
   <div class="w-full h-full flex flex-col">
     <div class="flex-1 flex items-center justify-center">
       <!-- First half content -->
-      <img :src="image" :alt="word" />
+      <img :src="image" :alt="answer" />
     </div>
     <div class="flex-1 flex items-center justify-center">
       <!-- Second half content -->
       <span
-        v-for="(char, index) in word.split('')"
+        v-for="(char, index) in answer.split('')"
         :key="index"
         class="querySelector text-8xl font-bold text-gray-300 flex"
       >

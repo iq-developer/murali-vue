@@ -5,13 +5,15 @@ export const abc = 'abcdefghijklmnopqrstuvwxyz'
 export const numbers = '0123456789'
 
 // Tailwind palette 500 colors
+export const colorCorrect = '#84cc16'
+export const colorWrong = '#ef4444'
+
 export const colors500 = [
-  '#ef4444',
+  '#22c55e',
   '#f97316',
   '#f59e0b',
   '#eab308',
   '#84cc16',
-  '#22c55e',
   '#10b981',
   '#14b8a6',
   '#06b6d4',

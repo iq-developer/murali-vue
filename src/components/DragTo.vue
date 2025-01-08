@@ -3,8 +3,8 @@ import { ref, reactive } from 'vue'
 import { playAudio, getRandomColor } from '../utils/helpers.ts'
 
 // Props
-const { word, next } = defineProps<{
-  word: string
+const { answer, next } = defineProps<{
+  answer: string
   image: string
   next: () => void
 }>()
@@ -12,7 +12,7 @@ const { word, next } = defineProps<{
 // State
 const colorfulLetters = reactive([
   {
-    char: word,
+    char: answer,
     color: getRandomColor(),
     angle: 0,
     x: Math.random() * window.innerWidth * 0.8,
