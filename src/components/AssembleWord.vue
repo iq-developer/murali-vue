@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { playAudio, getRandomColor, getRandomAngle } from '../utils/helpers.ts'
+import type { CommonSlidePart } from '../utils/types'
 
 // Props
-const { answer, image, next } = defineProps<{
-  answer: string
-  image: string
+const { slide, path, next } = defineProps<{
+  slide: AssembleWordSlide
+  path: string
   next: () => void
 }>()
+
+// Types
+type AssembleWordSlide = {
+  image: string | boolean
+  answer: string
+} & CommonSlidePart
+
+// Constants
+const { image, answer } = slide
 
 // State
 const colorfulLetters = reactive(
@@ -23,6 +33,13 @@ const colorfulLetters = reactive(
 )
 
 const draggingLetter = ref<{ index: number; startX: number; startY: number } | null>(null)
+
+// Computed
+const computedImage = computed(() => {
+  if (image === true) return `${path}.png`
+  if (typeof image === 'string') return image
+  throw new Error('Image is not defined')
+})
 
 // Drag-and-drop features
 function getLetterStyle(letter: any) {
@@ -111,13 +128,15 @@ function checkSuccess() {
     }, 500)
   }
 }
+
+// Lifecycle
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col">
     <div class="flex-1 flex items-center justify-center">
       <!-- First half content -->
-      <img :src="image" :alt="answer" />
+      <img :src="computedImage" :alt="answer" />
     </div>
     <div class="flex-1 flex items-center justify-center">
       <!-- Second half content -->

@@ -1,5 +1,9 @@
 # Murali
 
+## TODO
+
+throw errors in dev mode and return default values in prod mode
+
 ## Colors
 
 when element filled by base color:

@@ -2,16 +2,28 @@
 import { ref, reactive, onMounted } from 'vue'
 import { playAudio, getRandomColor } from '../utils/helpers.ts'
 import { abc, colors500RGBA } from '../utils/constants.ts'
+import type { CommonSlidePart } from '../utils/types'
 
 // Props
-const { answer, next } = defineProps<{
-  answer: string
+const { slide, next } = defineProps<{
+  slide: LocalSlide
   next: () => void
 }>()
 
+// Types
+type LocalSlide = {
+  answer: string
+} & CommonSlidePart
+
+// Constants
+const { answer } = slide
+const featuredClickedToFinish = 5
+
+// State
 const bubbles = reactive<{ letter: string; isRed: boolean; style: any }[]>([])
 const featuredClickCount = ref(0)
-const featuredClickedToFinish = 5
+
+// Computed
 
 const createBubble = (): { letter: string; isRed: boolean; style: any } => {
   const letters = abc.split('').filter((l) => l !== answer)

@@ -2,14 +2,20 @@
 import { ref, computed } from 'vue'
 import NextButton from './NextButton.vue'
 import { activateClasses } from '../utils/helpers'
-import type { Class, Word } from '../utils/types'
+import type { Class, Word, CommonSlidePart } from '../utils/types'
 
 // Props
-const { words, image, next } = defineProps<{
-  words: Word[]
-  image: string
+const { slide, path, next } = defineProps<{
+  slide: StorySlide
+  path: string
   next: () => void
 }>()
+
+// Types
+type StorySlide = {
+  image: string | boolean
+  words: Word[]
+} & CommonSlidePart
 
 // State
 const imageClass = ref('opacity-0')
@@ -17,7 +23,18 @@ const titleClass = ref('opacity-0')
 const highlightIndex = ref(0)
 const titleClassDelay = 1500
 
+// Computed
+const alt = computed(() => words.map(getWord).join(''))
+
+const computedImage = computed(() => {
+  if (image === true) return `${path}.png`
+  if (typeof image === 'string') return image
+  throw new Error('Image is not defined')
+})
+
 // Constants
+const { words, image } = slide
+
 const classes: Class[] = [
   { name: imageClass, delay: 500, class: 'opacity-100' },
   { name: titleClass, delay: titleClassDelay, class: 'opacity-100' },
@@ -39,9 +56,6 @@ const getWord = (word: Word): string => {
   return `${word.word} `
 }
 
-// Computed
-const alt = computed(() => words.map(getWord).join(''))
-
 // Handlers
 const handleImageClick = () => {
   console.log('Image clicked - say hint')
@@ -54,12 +68,8 @@ highlightWords(words)
 
 <template>
   <div class="flex flex-col">
-    <div
-      id="image"
-      class="flex justify-center transition-opacity duration-500 pb-20"
-      :class="imageClass"
-    >
-      <img :src="image" :alt="alt" />
+    <div class="flex justify-center transition-opacity duration-500 pb-20" :class="imageClass">
+      <img :src="computedImage" :alt="alt" @click="handleImageClick" />
     </div>
 
     <div

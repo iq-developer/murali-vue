@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import NextButton from './NextButton.vue'
 import { activateClasses } from '../utils/helpers'
-import type { Class } from '../utils/types'
+import type { Class, CommonSlidePart } from '../utils/types'
 
 // Props
-const { answer, image, next } = defineProps<{
-  answer: string
-  image: string
+const { slide, path, next } = defineProps<{
+  slide: ThisIsSlide
+  path: string
   next: () => void
 }>()
+
+// Types
+type ThisIsSlide = {
+  image: string | boolean
+  answer: string
+} & CommonSlidePart
 
 // State
 const imageClass = ref('opacity-0')
@@ -18,6 +24,8 @@ const imageInnerClass = ref('')
 const wordInnerClass = ref('')
 
 // Constants
+const { image, answer } = slide
+
 const classes: Class[] = [
   { name: titleClass, delay: 500, class: 'opacity-100' },
   { name: imageClass, delay: 1000, class: 'opacity-100' },
@@ -27,13 +35,19 @@ const classes: Class[] = [
   { name: imageInnerClass, delay: 3500, class: 'animate-grow' },
 ]
 
-// Functions
-
 // Computed
+const computedImage = computed(() => {
+  if (image === true) return `${path}.png`
+  if (typeof image === 'string') return image
+  throw new Error('Image is not defined')
+})
 
 // Handlers
 const handleImageClick = () => {
   console.log('Image clicked - say hint')
+}
+const handleAnswerClick = () => {
+  console.log('Answer clicked - say hint')
 }
 
 // Lifecycle
@@ -42,20 +56,12 @@ activateClasses(classes)
 
 <template>
   <div class="flex flex-col">
-    <div
-      id="image"
-      class="flex justify-center transition-opacity duration-500 pb-20"
-      :class="imageClass"
-    >
-      <img :src="image" :alt="answer" :class="imageInnerClass" />
+    <div class="flex justify-center transition-opacity duration-500 pb-20" :class="imageClass">
+      <img :src="computedImage" :alt="answer" :class="imageInnerClass" @click="handleImageClick" />
     </div>
 
-    <div
-      id="title"
-      class="text-9xl font-bold text-center transition-opacity duration-500"
-      :class="titleClass"
-    >
-      <p :class="wordInnerClass">
+    <div class="text-9xl font-bold text-center transition-opacity duration-500" :class="titleClass">
+      <p :class="wordInnerClass" @click="handleAnswerClick">
         {{ answer }}
       </p>
     </div>

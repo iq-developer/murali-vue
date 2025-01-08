@@ -2,19 +2,17 @@
 import { ref, computed } from 'vue'
 import data from '../data/levels.json'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { useNavigationStore } from '../stores/navigationStore'
+import type { AllSlideParts } from '../utils/types'
 import Story from '../components/Story.vue'
 import StoryQuestion from './StoryQuestion.vue'
 import AssembleWord from './AssembleWord.vue'
-import { useNavigationStore } from '../stores/navigationStore'
 import ThisIs from './ThisIs.vue'
 import DragTo from './DragTo.vue'
 import SoapBubbles from './SoapBubbles.vue'
-import type { Word } from '../utils/types'
 
-// Store
+// Constants
 const navigationStore = useNavigationStore()
-
-// Constants // TODO: throw error on each wrong step
 const route = useRoute()
 const router = useRouter()
 const levelNumber = +route?.params?.levelNumber
@@ -45,11 +43,6 @@ const next = () => {
   }
 }
 
-// Execution
-setTimeout(() => {
-  progress.value = (slideIndex.value + 1) * progressUnit.value
-}, 500)
-
 // Error handling
 if (!levelData) {
   throw new Error(`Level ${levelNumber} not found`)
@@ -63,11 +56,11 @@ if (!slides) {
 if (slides.length === 0) {
   throw new Error(`Slides are empty`)
 }
-// if (!slides[slideIndex.value]) {
-//   throw new Error(`Slide ${slideIndex.value} not found`)
-// }
 
-// throw new Error(`test Error`)
+// Lifecycle
+setTimeout(() => {
+  progress.value = (slideIndex.value + 1) * progressUnit.value
+}, 500)
 </script>
 
 <template>
@@ -107,38 +100,39 @@ if (slides.length === 0) {
           </button>
           <Story
             v-if="slide.slideType === 'story'"
-            :words="slide.words"
-            :image="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}.png`"
-            :next="next"
+            :slide
+            :path="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}`"
+            :next
           />
           <StoryQuestion
             v-else-if="slide.slideType === 'storyQuestion'"
-            :slide="slide"
+            :slide
             :path="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}`"
-            :next="next"
+            :next
           />
           <AssembleWord
             v-else-if="slide.slideType === 'assembleWord'"
-            :answer="slide.answer"
-            :image="slide.image"
-            :next="next"
+            :slide
+            :path="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}`"
+            :next
           />
           <ThisIs
             v-else-if="slide.slideType === 'thisIs'"
-            :answer="slide.answer"
-            :image="slide.image"
-            :next="next"
+            :slide
+            :path="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}`"
+            :next
           />
           <DragTo
             v-else-if="slide.slideType === 'dragTo'"
-            :answer="slide.answer"
-            :image="slide.image"
-            :next="next"
+            :slide
+            :path="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}`"
+            :next
           />
           <SoapBubbles
             v-else-if="slide.slideType === 'soapBubbles'"
-            :answer="slide.answer"
-            :next="next"
+            :slide
+            :path="`/src/assets/level${levelNumber}/task${taskNumber}/${index + 1}`"
+            :next
           />
         </div>
       </template>

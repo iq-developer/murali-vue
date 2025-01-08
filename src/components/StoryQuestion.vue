@@ -3,36 +3,22 @@ import { reactive, computed } from 'vue'
 import { playAudio } from '../utils/helpers.ts'
 import type { ComputedRef } from 'vue'
 import { randomizeArrayItems } from '../utils/helpers'
+import type { CommonSlidePart, Answer } from '../utils/types'
+
+// Props
+const { slide, path, next } = defineProps<{
+  slide: StoryQuestionSlide
+  path: string
+  next: () => void
+}>()
 
 // Types
-type WordAnswer = {
-  word: string
-  answer?: boolean
-  userAnswer?: 'selected' | 'correct' | 'wrong' | null
-}
-
-type ImageAnswer = {
-  image: string
-  alt: string
-  answer?: boolean
-  userAnswer?: 'selected' | 'correct' | 'wrong' | null
-}
-
-type Answer = WordAnswer | ImageAnswer
-
-type Slide = {
+type StoryQuestionSlide = {
   answers: Answer[]
   word?: string
   image?: string | boolean
   sound?: string | boolean
-}
-
-// Props
-const { slide, path, next } = defineProps<{
-  slide: Slide
-  path: string
-  next: () => void
-}>()
+} & CommonSlidePart
 
 // Constants
 const CORRECT_DELAY = 3000
@@ -49,14 +35,12 @@ const isSelectAll: ComputedRef<boolean> = computed(() =>
 const computedImage = computed(() => {
   if (image === true) return `${path}.png`
   if (typeof image === 'string') return image
-  // TODO: throw error in dev mode and return default image in prod mode
   throw new Error('Image is not defined')
 })
 
 const computedSound = computed(() => {
   if (sound === true) return `${path}.mp3`
   if (typeof sound === 'string') return sound
-  // TODO: throw error in dev mode and return default image in prod mode
   throw new Error('Sound is not defined')
 })
 
