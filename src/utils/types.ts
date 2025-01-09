@@ -1,6 +1,12 @@
 import type { Ref } from 'vue'
 
-export type SlideType = 'story' | 'storyQuestion'
+export type SlideType =
+  | 'Story'
+  | 'StoryQuestion'
+  | 'AssembleWord'
+  | 'ThisIs'
+  | 'DragTo'
+  | 'SoapBubbles'
 
 export type Class = {
   name: Ref<string>
@@ -34,10 +40,27 @@ type ImageAnswer = {
 }
 export type Answer = WordAnswer | ImageAnswer
 
-export type AllSlideParts = CommonSlidePart & {
-  words?: Word[]
-  answers?: Answer[]
+// Component types
+
+type imageWords = {
+  image: string | boolean
+  words: Word[]
+} & CommonSlidePart
+
+type AssembleWordSlide = {
+  image: string | boolean
+  answer: string
+} & CommonSlidePart
+
+type StoryQuestionSlide = {
+  answers: Answer[]
   word?: string
   image?: string | boolean
   sound?: string | boolean
-}
+} & CommonSlidePart
+
+type SoapBubblesSlide = {
+  answer: string
+} & CommonSlidePart
+
+export type AllSlides = imageWords | AssembleWordSlide | StoryQuestionSlide | SoapBubblesSlide

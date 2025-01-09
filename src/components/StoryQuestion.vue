@@ -84,6 +84,8 @@ const handleAnswerClick = (isCorrect: boolean, index: number) => {
       }
       resultCorrect()
     }
+  } else if (isSelectSome.value) {
+    return
   } else if (isCorrect) {
     userAnswers[index].userAnswer = 'correct'
     resultCorrect()

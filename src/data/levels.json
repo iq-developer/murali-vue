@@ -8,49 +8,49 @@
           {
             "id": "slide1",
             "isLesson": true,
-            "slideType": "story",
+            "slideType": "Story",
             "image": true,
             "words": ["Мad", "monkeys"]
           },
           {
             "id": "slide2",
             "isLesson": true,
-            "slideType": "story",
+            "slideType": "Story",
             "image": true,
             "words": ["One", "monkey"]
           },
           {
             "id": "slide3",
             "isLesson": true,
-            "slideType": "story",
+            "slideType": "Story",
             "image": true,
             "words": ["Two", "monkeys"]
           },
           {
             "id": "slide4",
             "isLesson": true,
-            "slideType": "story",
+            "slideType": "Story",
             "image": true,
             "words": ["Three", "monkeys"]
           },
           {
             "id": "slide5",
             "isLesson": true,
-            "slideType": "story",
+            "slideType": "Story",
             "image": true,
             "words": ["Moo!"]
           },
           {
             "id": "slide6",
             "isLesson": true,
-            "slideType": "story",
+            "slideType": "Story",
             "image": true,
             "words": ["Mad", "monkeys"]
           },
           {
             "id": "slide7",
             "info": "question about story - click on image",
-            "slideType": "storyQuestion",
+            "slideType": "StoryQuestion",
             "sound": true,
             "answers": [
               {
@@ -74,7 +74,7 @@
           },
           {
             "id": "slide8",
-            "slideType": "assembleWord",
+            "slideType": "AssembleWord",
             "image": "/src/assets/shared/monkey-head.png",
             "answer": "monkey"
           }
@@ -86,25 +86,25 @@
           {
             "id": "slide1",
             "isLesson": true,
-            "slideType": "thisIs",
+            "slideType": "ThisIs",
             "image": "/src/assets/shared/monkey-head.png",
             "answer": "m"
           },
           {
             "id": "slide2",
-            "slideType": "dragTo",
+            "slideType": "DragTo",
             "image": "/src/assets/shared/monkey-head.png",
             "answer": "m"
           },
           {
             "id": "slide3",
-            "slideType": "soapBubbles",
+            "slideType": "SoapBubbles",
             "answer": "m"
           },
           {
             "id": "slide4",
             "isLesson": true,
-            "slideType": "storyQuestion",
+            "slideType": "StoryQuestion",
             "word": "m",
             "answers": [
               {
@@ -131,7 +131,7 @@
           },
           {
             "id": "slide5",
-            "slideType": "storyQuestion",
+            "slideType": "StoryQuestion",
             "image": "/src/assets/shared/monkey-head.png",
             "answers": [
               {
@@ -151,20 +151,54 @@
           },
           {
             "id": "slide6",
-            "slideType": "selectImage",
-            "words": "m",
-            "images": [
-              "/src/assets/shared/monkey-head.png",
-              "/src/assets/shared/milk.png",
-              "/src/assets/shared/moon.png",
-              "/src/assets/shared/mouse.png"
+            "info": "select all chickens",
+            "slideType": "StoryQuestion",
+            "word": "m",
+            "answers": [
+              {
+                "image": "/src/assets/shared/monkey-head.png",
+                "alt": "monkey"
+              },
+              {
+                "image": "/src/assets/shared/milk.png",
+                "alt": "cow"
+              },
+              {
+                "image": "/src/assets/shared/moon.png",
+                "alt": "chicken",
+                "answer": true
+              },
+              {
+                "image": "/src/assets/shared/mouse.png",
+                "alt": "chicken",
+                "answer": true
+              }
             ]
           },
           {
             "id": "slide7",
-            "slideType": "selectLetter",
-            "image": "/src/assets/shared/sound.png",
-            "questions": ["m", "d", "t", "i"]
+            "info": "what word starts with m?",
+            "slideType": "StoryQuestion",
+            "sound": "/src/assets/shared/m.mp3",
+            "answers": [
+              {
+                "image": "/src/assets/shared/monkey-head.png",
+                "alt": "monkey",
+                "answer": true
+              },
+              {
+                "image": "/src/assets/shared/cow.png",
+                "alt": "cow"
+              },
+              {
+                "image": "/src/assets/shared/chicken.png",
+                "alt": "chicken"
+              },
+              {
+                "image": "/src/assets/shared/chicken.png",
+                "alt": "chicken"
+              }
+            ]
           }
         ]
       }

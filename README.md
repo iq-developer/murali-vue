@@ -15,9 +15,10 @@ when element filled by white color with grey border:
 when element filled by transparent color:
 200 - hover
 
-## About
+## Bugs
 
-Education app for children 5-7 years old
+- StoryQuestion - few answers fails
+- AssembleWord - drag out of screen
 
 ## Project Setup
 
