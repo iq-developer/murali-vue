@@ -69,13 +69,13 @@ const checkActiveButton = (id: number): boolean => {
             :renderChildrenOnly="checkDisabledButton(task.id)"
           >
             <div
-              class="absolute flex justify-center pt-5 -top-12 h-20 w-32 rounded-full"
+              class="absolute flex justify-center pt-5 -top-12 h-20 w-32 rounded-full select-none drag-none"
               :class="buttonClass(task.id)"
             >
               <img
                 v-if="task.id === navigationStore.taskId"
                 src="/src/assets/murali.png"
-                class="absolute -top-24 scale-150 select-none"
+                class="absolute -top-24 scale-150"
                 alt="Murali"
               />
               <span v-else-if="checkDisabledButton(task.id)">{{ task.id }}</span>
