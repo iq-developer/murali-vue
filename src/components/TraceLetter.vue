@@ -1,5 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive, watch } from 'vue'
+import type { CommonSlidePart } from '../utils/types'
+
+// Props
+const { slide, next } = defineProps<{
+  slide: TraceLetterSlide
+  next: () => void
+}>()
+
+// Types
+type TraceLetterSlide = {
+  paths: string[]
+} & CommonSlidePart
 
 // State
 const letterRef = ref<SVGSVGElement | null>(null)
@@ -8,11 +20,11 @@ const isDragging = ref(false)
 const handlerPos = reactive({ x: 0, y: 0 })
 
 // Array of letter paths
-const letterPaths = ['M 100 10 L 100 410', 'M 100 10 L 300 210 L 500 10 L 500 410']
+const { paths } = slide
 
 const currentPathIndex = ref(0)
 const pathRefs = ref<SVGPathElement[]>([])
-const progress = reactive<number[]>(letterPaths.map(() => 0))
+const progress = reactive<number[]>(paths.map(() => 0))
 let totalLength = 0
 
 const updateHandlerPosition = () => {
@@ -65,11 +77,11 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
     progress[currentPathIndex.value] = tracedLength
 
     if (tracedLength >= totalLength - 1) {
-      if (currentPathIndex.value < letterPaths.length - 1) {
+      if (currentPathIndex.value < paths.length - 1) {
         currentPathIndex.value++
         updateHandlerPosition()
       } else {
-        alert('ok')
+        next()
       }
       isDragging.value = false
       window.removeEventListener('mousemove', moveHandler)
@@ -89,12 +101,12 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center h-screen bg-gray-100 relative">
+  <div class="flex items-center justify-center h-screen relative">
     <!-- SVG Letter with multiple paths -->
     <svg ref="letterRef" viewBox="0 0 600 600" class="w-[600px] h-[600px] text-gray-300">
       <!-- Iterate over multiple paths -->
       <path
-        v-for="(path, index) in letterPaths"
+        v-for="(path, index) in paths"
         :key="index"
         :d="path"
         stroke="currentColor"
@@ -103,7 +115,7 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
         stroke-linecap="round"
       />
       <path
-        v-for="(path, index) in letterPaths"
+        v-for="(path, index) in paths"
         :key="'progress-' + index"
         :d="path"
         stroke="#172554"
@@ -118,7 +130,7 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
     <div
       ref="handlerRef"
       class="w-20 h-20 bg-blue-500 rounded-full absolute cursor-pointer"
-      :style="{ left: `${handlerPos.x - 40}px`, top: `${handlerPos.y - 120}px` }"
+      :style="{ left: `${handlerPos.x - 530}px`, top: `${handlerPos.y - 130}px` }"
       @mousedown="startDrag"
       @touchstart.prevent="startDrag"
     ></div>

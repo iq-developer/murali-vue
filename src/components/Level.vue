@@ -75,13 +75,11 @@ const checkActiveButton = (id: number): boolean => {
               <img
                 v-if="task.id === navigationStore.taskId"
                 src="/src/assets/murali.png"
-                class="absolute -top-24 scale-150"
+                class="absolute -top-24 scale-150 select-none"
                 alt="Murali"
               />
               <span v-else-if="checkDisabledButton(task.id)">{{ task.id }}</span>
-              <span v-else>
-                <div>✓</div>
-              </span>
+              <span v-else> ✓ </span>
             </div>
           </Link>
         </div>

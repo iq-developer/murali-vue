@@ -209,8 +209,8 @@
             "id": "slide1",
             "info": "trace letter M",
             "isLesson": true,
-            "slideType": "TraseLetter",
-            "traces": ["M 100 10 L 100 410", "M 100 10 L 300 210 L 500 10 L 500 410"]
+            "slideType": "TraceLetter",
+            "paths": ["M 100 10 L 100 410", "M 100 10 L 300 210 L 500 10 L 500 410"]
           }
         ]
       }
