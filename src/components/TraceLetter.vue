@@ -1,39 +1,3 @@
-<template>
-  <div class="flex items-center justify-center h-screen bg-gray-100 relative">
-    <!-- Gray Letter M -->
-    <svg ref="letterRef" viewBox="0 0 600 600" class="w-[600px] h-[600px] text-gray-300">
-      <!-- Outline of the letter 'M' -->
-      <path
-        ref="pathRef"
-        d="M 150 450 L 150 150 L 300 300 L 450 150 L 450 450"
-        stroke="currentColor"
-        stroke-width="48"
-        fill="none"
-        stroke-linecap="round"
-      />
-      <!-- Progress path that changes color as the user traces -->
-      <path
-        ref="progressRef"
-        d="M 150 450 L 150 150 L 300 300 L 450 150 L 450 450"
-        stroke="black"
-        stroke-width="48"
-        fill="none"
-        stroke-linecap="round"
-        stroke-dasharray="0 3000"
-      />
-    </svg>
-
-    <!-- Draggable Handler -->
-    <div
-      ref="handlerRef"
-      class="w-12 h-12 bg-blue-500 rounded-full absolute cursor-pointer select-none"
-      :style="{ left: `${handlerPos.x - 24}px`, top: `${handlerPos.y + 10}px` }"
-      @mousedown="startDrag"
-      @touchstart.prevent="startDrag"
-    ></div>
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent, ref, onMounted, reactive } from 'vue'
 
@@ -41,47 +5,48 @@ export default defineComponent({
   name: 'TraceLetter',
   setup() {
     const letterRef = ref<SVGSVGElement | null>(null)
-    const pathRef = ref<SVGPathElement | null>(null)
-    const progressRef = ref<SVGPathElement | null>(null)
     const handlerRef = ref<HTMLDivElement | null>(null)
-
     const isDragging = ref(false)
     const handlerPos = reactive({ x: 0, y: 0 })
 
+    // Array of letter paths
+    const letterPaths = ['M 100 10 L 100 410', 'M 100 10 L 300 210 L 500 10 L 500 410']
+
+    const currentPathIndex = ref(0)
+    const pathRefs = ref<SVGPathElement[]>([])
+    const progress = reactive<number[]>(letterPaths.map(() => 0))
     let totalLength = 0
 
     onMounted(() => {
-      if (pathRef.value && letterRef.value) {
-        totalLength = pathRef.value.getTotalLength()
-        console.log('Total path length:', totalLength)
-        const startPoint = pathRef.value.getPointAtLength(0)
-        const rect = letterRef.value.getBoundingClientRect()
-        console.log('rect:', rect)
+      const paths = letterRef.value!.querySelectorAll('path')
+      paths.forEach((path) => pathRefs.value.push(path as SVGPathElement))
 
+      if (pathRefs.value.length) {
+        totalLength = pathRefs.value[currentPathIndex.value].getTotalLength()
+        const startPoint = pathRefs.value[currentPathIndex.value].getPointAtLength(0)
+        const rect = letterRef.value!.getBoundingClientRect()
         handlerPos.x = startPoint.x + rect.left
         handlerPos.y = startPoint.y + rect.top
-        console.log('Handler start position:', handlerPos)
       }
     })
 
     const startDrag = (event: MouseEvent | TouchEvent) => {
       isDragging.value = true
-      console.log('Drag started')
 
       const moveHandler = (e: MouseEvent | TouchEvent) => {
-        if (!isDragging.value || !pathRef.value || !letterRef.value) return
+        if (!isDragging.value || !pathRefs.value[currentPathIndex.value]) return
 
         const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX
         const clientY = 'clientY' in e ? e.clientY : e.touches[0].clientY
-        const rect = letterRef.value.getBoundingClientRect()
+        const rect = letterRef.value!.getBoundingClientRect()
         const x = clientX - rect.left
         const y = clientY - rect.top
 
-        let closestPoint = pathRef.value.getPointAtLength(0)
+        let closestPoint = pathRefs.value[currentPathIndex.value].getPointAtLength(0)
         let minDistance = Infinity
         let tracedLength = 0
         for (let i = 0; i <= totalLength; i++) {
-          const point = pathRef.value.getPointAtLength(i)
+          const point = pathRefs.value[currentPathIndex.value].getPointAtLength(i)
           const distance = Math.hypot(point.x - x, point.y - y)
           if (distance < minDistance) {
             minDistance = distance
@@ -92,14 +57,18 @@ export default defineComponent({
 
         handlerPos.x = closestPoint.x + rect.left
         handlerPos.y = closestPoint.y + rect.top
-        console.log('Handler moved to:', handlerPos)
-
-        progressRef.value!.setAttribute('stroke-dasharray', `${tracedLength} 3000`)
-        console.log('Traced length:', tracedLength)
+        progress[currentPathIndex.value] = tracedLength
 
         if (tracedLength >= totalLength - 1) {
-          alert('ok')
-          console.log('Tracing completed')
+          if (currentPathIndex.value < letterPaths.length - 1) {
+            currentPathIndex.value++
+            totalLength = pathRefs.value[currentPathIndex.value].getTotalLength()
+            const nextStartPoint = pathRefs.value[currentPathIndex.value].getPointAtLength(0)
+            handlerPos.x = nextStartPoint.x + rect.left
+            handlerPos.y = nextStartPoint.y + rect.top
+          } else {
+            alert('ok')
+          }
           isDragging.value = false
           window.removeEventListener('mousemove', moveHandler)
           window.removeEventListener('mouseup', stopDrag)
@@ -108,7 +77,6 @@ export default defineComponent({
 
       const stopDrag = () => {
         isDragging.value = false
-        console.log('Drag stopped')
         window.removeEventListener('mousemove', moveHandler)
         window.removeEventListener('mouseup', stopDrag)
       }
@@ -119,12 +87,49 @@ export default defineComponent({
 
     return {
       letterRef,
-      pathRef,
-      progressRef,
       handlerRef,
+      letterPaths,
       handlerPos,
       startDrag,
+      progress,
     }
   },
 })
 </script>
+
+<template>
+  <div class="flex items-center justify-center h-screen bg-gray-100 relative">
+    <!-- SVG Letter with multiple paths -->
+    <svg ref="letterRef" viewBox="0 0 600 600" class="w-[600px] h-[600px] text-gray-300">
+      <!-- Iterate over multiple paths -->
+      <path
+        v-for="(path, index) in letterPaths"
+        :key="index"
+        :d="path"
+        stroke="currentColor"
+        stroke-width="70"
+        fill="none"
+        stroke-linecap="round"
+      />
+      <path
+        v-for="(path, index) in letterPaths"
+        :key="'progress-' + index"
+        :d="path"
+        stroke="#172554"
+        stroke-width="70"
+        fill="none"
+        stroke-linecap="round"
+        :stroke-dasharray="progress[index] + ' 1000'"
+      />
+    </svg>
+
+    <!-- Draggable Handler -->
+    <div
+      ref="handlerRef"
+      class="w-20 h-20 bg-blue-500 rounded-full absolute cursor-pointer"
+      :style="{ left: `${handlerPos.x - 40}px`, top: `${handlerPos.y - 120}px` }"
+      @mousedown="startDrag"
+      @touchstart.prevent="startDrag"
+    ></div>
+  </div>
+</template>

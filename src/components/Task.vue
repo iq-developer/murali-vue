@@ -9,6 +9,7 @@ import AssembleWord from './AssembleWord.vue'
 import ThisIs from './ThisIs.vue'
 import DragTo from './DragTo.vue'
 import SoapBubbles from './SoapBubbles.vue'
+import TraceLetter from './TraceLetter.vue'
 import type { AllSlides } from '../utils/types'
 
 // Constants
@@ -29,6 +30,7 @@ const components: Record<
   | typeof ThisIs
   | typeof DragTo
   | typeof SoapBubbles
+  | typeof TraceLetter
 > = {
   Story,
   StoryQuestion,
@@ -36,6 +38,7 @@ const components: Record<
   ThisIs,
   DragTo,
   SoapBubbles,
+  TraceLetter,
 }
 
 // State
